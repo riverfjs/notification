@@ -1,0 +1,6 @@
+feeds/.fred_api_key
+__pycache__/
+.playwright-mcp/
+.claude/
+research/
+feeds/UPGRADE_PLAN.md

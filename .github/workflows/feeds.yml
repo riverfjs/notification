@@ -1,0 +1,53 @@
+# 每个交易日收盘后在 GitHub 上跑 feeds/run_all.py,把更新的 CSV 提交回仓库。
+# 依赖:仓库 Settings → Secrets and variables → Actions → 新建 secret `FRED_API_KEY`。
+# 手动触发:Actions 页 → feeds-daily → Run workflow(首次先手动跑一次,验证各源对云 IP 的态度)。
+name: feeds-daily
+
+on:
+  schedule:
+    - cron: "30 22 * * 1-5"   # UTC 22:30 = 美东 17:30(夏令时)/18:30(冬令时),收盘后
+  workflow_dispatch:
+  push:
+    paths:                    # feeds 代码变更即自动跑一轮验证(Actions 的数据提交只
+      - "feeds/**"            # 碰 data/,不会触发自身,无循环)
+      - "!feeds/**.md"        # 纯文档变更不值得空跑 30 个模块
+      - ".github/workflows/feeds.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: feeds-daily
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+
+      - name: 跑全部 feeds(逐个容错,任一失败本步标红但不影响提交)
+        id: run
+        continue-on-error: true
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: uv run feeds/run_all.py
+
+      - name: 提交并推送数据变更(成功的模块照常落地)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ feeds/ehs_archive.csv
+          if git diff --staged --quiet; then
+            echo "无数据变更,跳过提交"
+          else
+            git commit -m "data: daily feeds refresh $(date -u +%F)"
+            git push
+          fi
+
+      - name: 如有模块失败则让任务标红
+        if: steps.run.outcome == 'failure'
+        run: exit 1
