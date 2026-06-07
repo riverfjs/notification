@@ -24,7 +24,7 @@ uv run feeds/rates.py          # 任意单个
 | 脚本 | 产出 | 内容 |
 |---|---|---|
 | prices | data/ 下 30 个 ticker 的日线 OHLCV | SPY/QQQ/DIA/IWM、11 个 GICS 行业 ETF、VIX/VXO、GLD/TLT/HYG 等(yfinance 复权价);带防回退守门:新数据为空/倒退/缩水则保留旧文件 |
-| spot_gold | data/XAUUSD.csv(date,c) | 现货金 $/盎司:LBMA PM 定盘,1968+,PM 缺日用 AM 补 |
+| spot_gold | data/XAUUSD.csv(date,c) | 现货金 $/盎司:LBMA PM 定盘,1968+,PM 缺日用 AM 补(站点前置 Imunify360 对数据中心 IP **间歇拦截**:curl_cffi 仿 Chrome + 5 次退避;彻底失败则保留全量历史软跳过、下次自愈) |
 | spot_copper | data/COPPER.csv(date,c) | 铜 $/公吨:LME 现汇结算 2008+(Westmetall 免费档)⊕ HG=F×2204.62 补 2000-2007 |
 
 ### 宏观基本面(14,FRED 官方 API)
@@ -77,4 +77,4 @@ uv run feeds/rates.py          # 任意单个
 - **冻结序列**(日志里日期永不前进,属正常):VXO ..2021-09-23(CBOE 停止发布;它是覆盖 1987 股灾的唯一免费波动率序列,1990 后用 VIX)、putcall ..2019-10(由 putcall_cboe 续)。
 - prices 全量覆写(复权基准随分红回移,不能增量追加);盘中跑会含当日半根 K,收盘后跑最稳。
 
-依赖:`pandas numpy openpyxl xlrd yfinance lxml curl_cffi`(uv 脚本头各自声明,`uv run` 自动装);取数以 stdlib urllib 为主,**spot_gold 例外用 curl_cffi(Chrome TLS 指纹)** —— LBMA 的 WAF 在数据中心 IP 上按指纹挑客户端(urllib 时而 415、时而 200 错误体)。外部站点:api.stlouisfed.org、publicreporting.cftc.gov、naaim.org、aaii.com、cdn/www.cboe.com、web.archive.org、westmetall.com、barchart.com、LBMA、production.dataviz.cnn.io。
+依赖:`pandas numpy openpyxl xlrd yfinance lxml curl_cffi`(uv 脚本头各自声明,`uv run` 自动装);取数以 stdlib urllib 为主,**spot_gold 例外用 curl_cffi(Chrome TLS 指纹)** —— LBMA 站点前置 Imunify360 对数据中心 IP 间歇拦截(同代码时而 200 时而 415/质询页),故指纹 + 退避重试,彻底失败软跳过保留历史。外部站点:api.stlouisfed.org、publicreporting.cftc.gov、naaim.org、aaii.com、cdn/www.cboe.com、web.archive.org、westmetall.com、barchart.com、LBMA、production.dataviz.cnn.io。

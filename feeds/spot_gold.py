@@ -33,21 +33,24 @@ OUT = os.path.join(DATA_DIR, "XAUUSD.csv")
 
 
 def _fetch_json(url: str) -> list[dict]:
-    """LBMA 的 WAF 在数据中心 IP 上按 TLS 指纹挑客户端(urllib 时而 415、
-    时而 200 错误体)—— 用 curl_cffi 仿真 Chrome 指纹,一条路不做头部兜底;
-    仅做同客户端的瞬时重试 + 响应形状校验(必须是 [{'d':…,'v':…},…])。"""
+    """LBMA 站点(prices.lbma.org.uk)前置 Imunify360 机器人防护,对数据中心 IP
+    【间歇性】拦截 —— 实测(2026-06,GitHub runner)同一 curl_cffi 代码有时拿到干净
+    JSON、有时收到 415 / Imunify360 错误体 / JS 质询页,翻转取决于该次 Azure 出口
+    IP 的实时信誉。这【不是】固定的可逆 JS 谜题,而是 flaky 风控,故对策是韧性而非逆向:
+    curl_cffi 仿 Chrome 指纹(IP 干净时即放行)+ 多次拉开间隔重试骑过短暂质询窗口;
+    彻底失败交由 main() 软处理(保留已落地的全量历史,下次自愈)。响应须为 [{'d',…}] 数组。"""
     last: Exception | str | None = None
-    for a in range(3):
+    for a in range(5):
         try:
             r = _curl.get(url, impersonate="chrome", timeout=40)
             r.raise_for_status()
             rows = r.json()
             if isinstance(rows, list) and rows and isinstance(rows[0], dict) and "d" in rows[0]:
                 return rows
-            last = f"HTTP 200 但非价格数组: {str(rows)[:100]}"
+            last = f"HTTP 200 但非价格数组(疑似 Imunify360 质询): {str(rows)[:80]}"
         except Exception as e:  # noqa: BLE001
             last = e
-        time.sleep(1.5 * (a + 1))
+        time.sleep(3.0 * (a + 1))                         # 3/6/9/12s:骑过短质询窗口
     raise RuntimeError(f"LBMA 抓取失败: {url}\n  last: {str(last)[:150]}")
 
 
@@ -61,7 +64,17 @@ def _fix_series(fix: str) -> pd.Series:
 
 
 def main():
-    pm, am = _fix_series("pm"), _fix_series("am")
+    try:
+        pm, am = _fix_series("pm"), _fix_series("am")
+    except RuntimeError as e:
+        # Imunify360 间歇拦截:已有全量历史就软失败(保留旧文件,下次自愈),不红整条管线;
+        # 首次运行(无缓存)才硬失败 —— 没有历史可退。
+        if os.path.exists(OUT):
+            old = pd.read_csv(OUT, index_col=0, parse_dates=True)
+            print(f"!   XAUUSD              LBMA 本次被拦,保留旧缓存 "
+                  f"({len(old)} rows ..{old.index.max().date()});下次自愈 — {str(e)[:80]}")
+            return
+        raise
     gold = pm.combine_first(am)                       # PM 为准,缺日用 AM 补
     if len(gold) < 10_000 or not (100 < gold.iloc[-1] < 50_000):
         raise RuntimeError(f"LBMA 数据异常: {len(gold)} rows, last={gold.iloc[-1]}")
