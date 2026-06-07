@@ -3,6 +3,7 @@ import { Layers, Maximize2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { ChartSpec, SeriesSpec } from "../charts/types";
 import { baseOption, echarts, INK2, PALETTE, yAxis } from "../charts/theme";
@@ -72,7 +73,9 @@ export function ChartCard({
   const [state, setState] = useState<"loading" | "ready" | "error">("loading");
   const [err, setErr] = useState("");
   const [latest, setLatest] = useState<{ date: string; value: number } | null>(null);
-  const [range, setRange] = useState<number | null>(spec.defaultYears ?? 10);
+  // number=最近 N 年 / null=全部 / "custom"=已被拖拽或同步缩放(无预设高亮)
+  const [range, setRange] = useState<number | null | "custom">(spec.defaultYears ?? 10);
+  const progZoom = useRef(false);   // 本图自己派发缩放时置位,避免误清高亮
 
   // 数据 + 渲染
   useEffect(() => {
@@ -84,6 +87,10 @@ export function ChartCard({
         const chart = echarts.init(ref.current);
         chartRef.current = chart;
         if (syncGroup) joinSync(syncGroup, chart);
+        // 用户拖拽 / 对比同步推来的缩放(非预设按钮)→ 清掉区间高亮(变 custom)
+        chart.on("dataZoom", () => {
+          if (!progZoom.current) setRange("custom");
+        });
 
         const first = data[0];
         if (first.length) setLatest({ date: first[first.length - 1][0], value: first[first.length - 1][1] });
@@ -150,10 +157,11 @@ export function ChartCard({
     };
   }, [spec, syncGroup]);
 
-  // 区间切换
+  // 区间切换(仅预设;custom 是缩放产生的结果状态,不回写视图)
   useEffect(() => {
     const c = chartRef.current;
-    if (!c || state !== "ready") return;
+    if (!c || state !== "ready" || range === "custom") return;
+    progZoom.current = true;          // 本次派发是预设,别被 dataZoom 监听清掉高亮
     if (range === null) {
       c.dispatchAction({ type: "dataZoom", start: 0, end: 100 });
     } else {
@@ -161,6 +169,7 @@ export function ChartCard({
       const start = end - range * 365.25 * 86400_000;
       c.dispatchAction({ type: "dataZoom", startValue: start, endValue: end });
     }
+    requestAnimationFrame(() => (progZoom.current = false));
   }, [range, state, latest]);
 
   const latestText = useMemo(() => {
@@ -173,8 +182,8 @@ export function ChartCard({
   return (
     <Card className="h-full gap-2 py-4 hover:border-input transition-colors">
       <CardHeader className="px-4 gap-0.5">
-        <CardTitle className="text-[15px] truncate">{spec.title}</CardTitle>
-        <CardDescription className="text-xs truncate">{spec.subtitle ?? " "}</CardDescription>
+        <CardTitle className="text-[15px] truncate" title={spec.title}>{spec.title}</CardTitle>
+        <CardDescription className="text-xs truncate" title={spec.subtitle}>{spec.subtitle ?? " "}</CardDescription>
         <CardAction className="flex items-center gap-2 flex-wrap justify-end">
           {latest && (
             <Badge variant="outline" className="num text-primary hidden sm:inline-flex" title={`首列系列最新值 · ${latest.date}`}>
@@ -182,19 +191,24 @@ export function ChartCard({
               <span className="text-muted-foreground/60">{latest.date.slice(2)}</span>
             </Badge>
           )}
-          <div className="flex rounded-md border overflow-hidden">
+          <ToggleGroup
+            type="single"
+            size="sm"
+            variant="outline"
+            value={range === "custom" ? "" : String(range)}
+            onValueChange={(v) => v && setRange(v === "null" ? null : Number(v))}
+          >
             {RANGES.map((r) => (
-              <button
+              <ToggleGroupItem
                 key={r.label}
-                onClick={() => setRange(r.years)}
-                className={`num px-2 py-1 text-[11px] transition-colors ${
-                  range === r.years ? "bg-primary/15 text-primary" : "text-muted-foreground/60 hover:text-muted-foreground"
-                }`}
+                value={String(r.years)}
+                aria-label={r.label}
+                className="num px-2 text-[11px] h-7 data-[state=on]:bg-primary/15 data-[state=on]:text-primary"
               >
                 {r.label}
-              </button>
+              </ToggleGroupItem>
             ))}
-          </div>
+          </ToggleGroup>
           {onCompare && (
             <Tooltip>
               <TooltipTrigger asChild>

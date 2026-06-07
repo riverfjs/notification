@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Layers, Menu } from "lucide-react";
+import { Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { GROUPS } from "./charts/groups";
 import type { ChartSpec } from "./charts/types";
 import { ChartCard } from "./components/ChartCard";
-import { Sidebar } from "./components/Sidebar";
+import { AppSidebar } from "./components/Sidebar";
 import { Overview } from "./pages/Overview";
 
 /** 路由:#/overview | #/<组>/可选<图 id>(带图 id 时滚动定位并闪烁) */
@@ -25,8 +27,7 @@ export default function App() {
   const [route, nav] = useHashRoute();
   const [gid, focusId] = route.split("/");
   const group = GROUPS.find((g) => g.id === gid);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const mainRef = useRef<HTMLElement>(null);
+  const mainRef = useRef<HTMLDivElement>(null);
 
   // 全屏 & 对比
   const allCharts = useMemo(() => new Map(GROUPS.flatMap((g) => g.charts.map((c) => [c.id, c] as const))), []);
@@ -55,28 +56,18 @@ export default function App() {
 
   return (
     <TooltipProvider delayDuration={300}>
-      <div className="flex h-full terminal-bg">
-        <Sidebar
-          groups={GROUPS}
-          active={gid}
-          onNav={(id) => {
-            nav(id);
-            setMenuOpen(false);
-          }}
-          open={menuOpen}
-          onClose={() => setMenuOpen(false)}
-        />
-        <div className="flex-1 min-w-0 flex flex-col">
-          <header className="h-14 shrink-0 border-b flex items-center gap-3 px-4 md:px-6 bg-background/70 backdrop-blur sticky top-0 z-20">
-            <button className="md:hidden text-muted-foreground" onClick={() => setMenuOpen(true)} aria-label="打开菜单">
-              <Menu size={20} />
-            </button>
+      <SidebarProvider className="terminal-bg">
+        <AppSidebar groups={GROUPS} active={gid} onNav={nav} />
+        <SidebarInset className="min-w-0 bg-transparent">
+          <header className="h-14 shrink-0 border-b flex items-center gap-2 px-4 md:px-6 bg-background/70 backdrop-blur sticky top-0 z-20">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-1 !h-4" />
             <h1 className="text-[15px] font-semibold tracking-tight">{group ? group.title : "总览"}</h1>
             <span className="num text-[10px] text-muted-foreground/60 ml-auto hidden sm:block">
               free · official sources · daily auto-refresh
             </span>
           </header>
-          <main ref={mainRef} className="flex-1 overflow-y-auto p-4 md:p-6">
+          <div ref={mainRef} className="flex-1 overflow-y-auto p-4 md:p-6">
             {group ? (
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 max-w-[1800px]">
                 {group.charts.map((c, i) => (
@@ -93,8 +84,8 @@ export default function App() {
             ) : (
               <Overview onNav={nav} />
             )}
-          </main>
-        </div>
+          </div>
+        </SidebarInset>
 
         {/* 对比托盘:跨组累积勾选 */}
         {picked.length > 0 && !comparing && (
@@ -142,7 +133,7 @@ export default function App() {
             </div>
           </DialogContent>
         </Dialog>
-      </div>
+      </SidebarProvider>
     </TooltipProvider>
   );
 }

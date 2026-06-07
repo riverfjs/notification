@@ -35,7 +35,7 @@ const FOCUS: ChartSpec[] = [
       { value: 25, label: "恐慌 25" },
       { value: 75, label: "贪婪 75" },
     ],
-    note: "API 2020-09~2021-01 回填段有占位脏值,做信号从 2021-02 起算。",
+    note: "API 2020-09~2021-01 回填段为占位脏值,2021-02 起为有效值。",
     defaultYears: 3,
   },
   {

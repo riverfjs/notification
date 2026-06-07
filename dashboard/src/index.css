@@ -1,18 +1,53 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* ── shadcn/ui 主题(new-york / neutral / 暗色常驻)──────────────────────
-   变量值 = shadcn 官方 neutral .dark 原版;唯一改动:--primary 换成终端琥珀。
-   本站只有暗色,直接落在 :root。 */
+@custom-variant dark (&:is(.dark *));
+
+/* ── shadcn/ui 官方 neutral 主题(new-york)──────────────────────────────
+   :root(浅)/ .dark(深)两块保持 shadcn CLI 规范结构,后续 `shadcn add`
+   注入的变量自动归位、无需手改。本站 <html class="dark"> 常驻暗色。
+   唯一品牌定制:--primary / --sidebar-primary = 终端琥珀(两块都覆写)。
+   自定义扩展:--up/--down 行情涨跌色,等宽/中文字体。 */
 :root {
   --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.795 0.151 70.67);            /* 琥珀 #f5a524 */
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --up: oklch(0.78 0.14 170);                     /* 薄荷 #2dd4a7 */
+  --down: oklch(0.68 0.21 13);                    /* 玫红 #fb4d6d */
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.795 0.151 70.67);    /* 琥珀 */
+  --sidebar-primary-foreground: oklch(0.205 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.269 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.795 0.151 70.67);            /* 琥珀 #f5a524 */
+  --primary: oklch(0.795 0.151 70.67);            /* 琥珀 */
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
@@ -24,9 +59,16 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
-  /* 自定义扩展:行情涨跌色 */
-  --up: oklch(0.78 0.14 170);                     /* 薄荷 #2dd4a7 */
-  --down: oklch(0.68 0.21 13);                    /* 玫红 #fb4d6d */
+  --up: oklch(0.78 0.14 170);
+  --down: oklch(0.68 0.21 13);
+  --sidebar: oklch(0.17 0 0);                      /* 比卡片再深一档石墨 */
+  --sidebar-foreground: oklch(0.708 0 0);
+  --sidebar-primary: oklch(0.795 0.151 70.67);    /* 琥珀:active 项 */
+  --sidebar-primary-foreground: oklch(0.205 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 8%);
+  --sidebar-ring: oklch(0.556 0 0);
 }
 
 @theme inline {
@@ -50,6 +92,14 @@
   --color-ring: var(--ring);
   --color-up: var(--up);
   --color-down: var(--down);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -71,7 +121,7 @@
 /* ── Macro Terminal 氛围层 ──────────────────────────────────────────── */
 .terminal-bg {
   background-image:
-    radial-gradient(1200px 400px at 70% -10%, rgba(245, 165, 36, 0.05), transparent 60%),
+    radial-gradient(1200px 400px at 70% -10%, color-mix(in oklch, var(--primary) 5%, transparent), transparent 60%),
     linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
   background-size: auto, 44px 44px, 44px 44px;
@@ -91,8 +141,8 @@
 
 /* KPI 点击跳转后的目标卡片琥珀闪烁 */
 @keyframes flashRing {
-  0% { box-shadow: 0 0 0 0 rgba(245, 165, 36, 0.55); }
-  70% { box-shadow: 0 0 0 16px rgba(245, 165, 36, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(245, 165, 36, 0); }
+  0% { box-shadow: 0 0 0 0 color-mix(in oklch, var(--primary) 55%, transparent); }
+  70% { box-shadow: 0 0 0 16px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
 }
 .flash { animation: flashRing 1.1s ease-out 2; border-radius: var(--radius); }
