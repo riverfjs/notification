@@ -7,3 +7,9 @@ feeds/UPGRADE_PLAN.md
 node_modules/
 dashboard/dist/
 *.tsbuildinfo
+.mcp.json
+*.jpeg
+*.jpg
+*.png
+lbma_probe.txt
+lbma_challenge.html
