@@ -1,7 +1,8 @@
 /** CSV 数据层:直接拉仓库 raw 文件(公开仓库自带 CDN),内存缓存。
  *  数据每天由 GitHub Actions 刷新提交 → 页面随时 fetch 都是最新,无需重新部署。 */
 
-const RAW = "https://raw.githubusercontent.com/riverfjs/notification/main";
+const DEFAULT_DATA_BASE = "https://raw.githubusercontent.com/riverfjs/notification/main/data";
+const DATA_BASE = (import.meta.env.VITE_DATA_BASE || DEFAULT_DATA_BASE).replace(/\/$/, "");
 
 export interface Table {
   /** ISO 日期字符串,升序 */
@@ -12,7 +13,7 @@ export interface Table {
 
 const cache = new Map<string, Promise<Table>>();
 
-/** name: "macro/fng" | "XAUUSD" 等,相对 data/ 的路径(不带 .csv) */
+/** name: "macro/fng" | "tickers/VIX" | "spot/XAUUSD" 等,相对 data/ 的路径(不带 .csv) */
 export function loadCsv(name: string): Promise<Table> {
   let p = cache.get(name);
   if (!p) {
@@ -24,7 +25,7 @@ export function loadCsv(name: string): Promise<Table> {
 }
 
 async function fetchCsv(name: string): Promise<Table> {
-  const res = await fetch(`${RAW}/data/${name}.csv`);
+  const res = await fetch(`${DATA_BASE}/${name}.csv`);
   if (!res.ok) throw new Error(`fetch ${name}.csv: HTTP ${res.status}`);
   return parseCsv(await res.text());
 }

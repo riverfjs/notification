@@ -3,7 +3,7 @@
 # requires-python = ">=3.11"
 # dependencies = ["yfinance>=0.2.40", "pandas>=2.0", "numpy>=1.26"]
 # ///
-"""价格缓存刷新 — 把 data/ 下所有已有 ticker 的 CSV(date,o,h,l,c,v)用 yfinance 全量重拉。
+"""价格缓存刷新 — 把 data/tickers/ 下所有已有 ticker 的 CSV(date,o,h,l,c,v)用 yfinance 全量重拉。
 
 口径与 research/data.py(已归档)的 fetch 完全一致:auto_adjust=True(分红+拆股复权)、列
 o/h/l/c/v。但彼有缓存就跳过,本脚本是「刷新」:每次全量 re-download 并整文件覆盖 —— 复权价会随
@@ -15,7 +15,7 @@ o/h/l/c/v。但彼有缓存就跳过,本脚本是「刷新」:每次全量 re-do
 cron 顺序:prices → run_all(breadth / sector_strength 读这些价格缓存,必须先刷价再算指标;
 建议在美股收盘后跑,盘中跑会带入当日未完成的 bar,下一次运行会自动覆盖修正)。
 
-    uv run feeds/prices.py            # 刷新 data/ 下全部 ticker
+    uv run feeds/prices.py            # 刷新 data/tickers/ 下全部 ticker
     uv run feeds/prices.py SPY XLK    # 只刷指定 ticker
 """
 from __future__ import annotations
@@ -26,27 +26,27 @@ import time
 
 import pandas as pd
 
-from _common import DATA_DIR
+from _common import TICKER_DIR
 
 # 文件名 -> yfinance 代码(指数需要 ^ 前缀;文件名不能带 ^)
 SYMBOL_MAP = {"VIX": "^VIX", "VXO": "^VXO"}
-# 非 yfinance 价格缓存,跳过:FNG_long = 旧研究遗留的第三方 F&G 归档(research/ 专用,
-# feeds 不维护;官方 F&G 归 feeds/fng.py);XAUUSD = 现货金,归 feeds/spot_gold.py 管;
-# COPPER = 现货铜,归 feeds/spot_copper.py 管。(这些 schema 本就非 OHLCV,SKIP 是双保险。)
+# 非 yfinance 价格缓存,跳过:XAUUSD = 现货金,归 feeds/spot_gold.py 管;
+# COPPER = 现货铜,归 feeds/spot_copper.py 管;FNG_long = 旧研究遗留,已归档到 data/legacy/。
 SKIP = {"FNG_long", "XAUUSD", "COPPER"}
 OHLCV = ["o", "h", "l", "c", "v"]
 
 
 def discover() -> list[str]:
-    """data/ 下所有 schema 为 date,o,h,l,c,v 的 ticker 文件(动态:后续新增自动纳入)。"""
+    """data/tickers/ 下所有 schema 为 date,o,h,l,c,v 的 ticker 文件(后续新增自动纳入)。"""
+    os.makedirs(TICKER_DIR, exist_ok=True)
     out = []
-    for fn in sorted(os.listdir(DATA_DIR)):
+    for fn in sorted(os.listdir(TICKER_DIR)):
         if not fn.endswith(".csv"):
             continue
         t = fn[:-4]
         if t in SKIP:
             continue
-        with open(os.path.join(DATA_DIR, fn)) as f:
+        with open(os.path.join(TICKER_DIR, fn)) as f:
             header = f.readline().strip().lower().split(",")
         if header == ["date"] + OHLCV:   # 双保险:非 OHLCV schema 一律不碰
             out.append(t)
@@ -68,7 +68,13 @@ def download(symbol: str) -> pd.DataFrame:
 
 
 def refresh(ticker: str) -> bool:
-    path = os.path.join(DATA_DIR, f"{ticker}.csv")
+    if ticker in SKIP:
+        print(f"  ! {ticker}: 非 yfinance/ticker 缓存,跳过")
+        return False
+    path = os.path.join(TICKER_DIR, f"{ticker}.csv")
+    if not os.path.exists(path):
+        print(f"  ! {ticker}: 未找到 {path},跳过")
+        return False
     old = pd.read_csv(path, index_col=0, parse_dates=True)
     old_last, old_n = old.index.max(), len(old)
     try:

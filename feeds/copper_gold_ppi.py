@@ -4,8 +4,8 @@
 # dependencies = ["pandas>=2.0", "numpy>=1.26", "requests>=2.31"]
 # ///
 """銅金比 & PPI — 月频腿:铜/PPI 来自 FRED(IMF 月频);日频腿(P10,MacroMicro 同口径):
-COMEX 铜期货 data/COPPER.csv($/公吨,feeds/spot_copper.py 维护,2000-08+)。
-金价统一用真现货 XAU/USD(data/XAUUSD.csv,LBMA PM 定盘 1968+,feeds/spot_gold.py 维护;
+COMEX 铜期货 data/spot/COPPER.csv($/公吨,feeds/spot_copper.py 维护,2000-08+)。
+金价统一用真现货 XAU/USD(data/spot/XAUUSD.csv,LBMA PM 定盘 1968+,feeds/spot_gold.py 维护;
 先跑 spot_gold、spot_copper 再跑本脚本)。
 铜金比 = 铜($/公吨)/ 金($/盎司),真实"吨铜值多少盎司金"口径(不再是 GLD 的 /10.85 失真):
   copper_usd_mt / copper_gold_ratio        月频(IMF,1992+,滞后 1-2 月)— 保留原列

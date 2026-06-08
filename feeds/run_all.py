@@ -6,7 +6,7 @@
 # ///
 """跑全部 30 个 feed,逐个容错,最后汇总。每天刷新一行 cron 即可(美股收盘后跑):
     uv run /home/river_fan/code/notification/feeds/run_all.py
-单独跑某一个:uv run feeds/rates.py 等。输出:宏观 CSV 在 ../data/macro/,价格缓存在 ../data/。
+单独跑某一个:uv run feeds/rates.py 等。输出:宏观 CSV 在 ../data/macro/,价格缓存在 ../data/tickers/ 和 ../data/spot/。
 顺序有依赖:prices(价格缓存)与 spot_gold(现货金)在前,铜金/油金/breadth/sector 在后。"""
 import importlib
 import sys

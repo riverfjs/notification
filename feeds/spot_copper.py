@@ -3,7 +3,7 @@
 # requires-python = ">=3.11"
 # dependencies = ["yfinance>=0.2.40", "pandas>=2.0", "numpy>=1.26", "lxml>=5.0"]
 # ///
-"""日频铜价($/公吨)→ data/COPPER.csv(date,c,与 data/XAUUSD.csv 同 schema)。
+"""日频铜价($/公吨)→ data/spot/COPPER.csv(date,c,与 data/spot/XAUUSD.csv 同 schema)。
 
 口径(2026-06 实测对齐 MacroMicro):
   2008-01+  LME 铜 Cash-Settlement(官方结算价,$/公吨)— Westmetall 免费年度归档页
@@ -17,7 +17,7 @@
 MacroMicro 的日频铜金比用的是 LME(2026-06-04:LME 13872/金 4496.95=3.085≈其 3.07)。
 两腿在 2008 接缝处实测溢价中位 0.06%(2008-2023 全程 ±1% 内),原值拼接、无缩放。
 
-落地 data/COPPER.csv(date,c),read_price("COPPER")["c"] 即日频铜价($/公吨),
+落地 data/spot/COPPER.csv(date,c),read_price("COPPER")["c"] 即日频铜价($/公吨),
 供 copper_gold_ppi.py 的日频铜金比。全量覆盖、幂等(年度页是完整静态归档,每次重拉
 2008..今全部年份,~19 个小页);带 prices.py 同款守门(新数据回退/缩水保留旧文件)。
 注意:列只有 c(非 OHLCV),prices.py 的 discover() 按 header 自动跳过本文件。"""
@@ -30,14 +30,14 @@ from datetime import date
 
 import pandas as pd
 
-from _common import DATA_DIR, _get
+from _common import SPOT_DIR, _get
 
 LB_PER_MT = 2204.62                                   # 磅/公吨
 LME_FIRST_YEAR = 2008                                 # Westmetall LME_Cu_cash 归档起点
 WM = ("https://www.westmetall.com/en/markdaten.php"
       "?action=table&field=LME_Cu_cash&year={y}")
 WM_UA = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36", "Accept": "*/*"}
-OUT = os.path.join(DATA_DIR, "COPPER.csv")
+OUT = os.path.join(SPOT_DIR, "COPPER.csv")
 
 
 def _lme_year(year: int) -> pd.Series:
@@ -95,6 +95,7 @@ def main():
         if df.index.max() < old.index.max() or len(df) < 0.95 * len(old):
             raise RuntimeError(f"新数据回退/缩水({len(df)} rows ..{df.index.max().date()} "
                                f"vs 旧 {len(old)} rows ..{old.index.max().date()}),保留旧文件")
+    os.makedirs(SPOT_DIR, exist_ok=True)
     df.to_csv(OUT)
     print(f"OK  COPPER              铜 LME+HG 拼接 {len(df):>6} rows  "
           f"{df.index.min().date()}..{df.index.max().date()}  "

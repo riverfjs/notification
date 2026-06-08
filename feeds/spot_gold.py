@@ -3,7 +3,7 @@
 # requires-python = ">=3.11"
 # dependencies = ["pandas>=2.0", "numpy>=1.26", "curl_cffi>=0.7"]
 # ///
-"""现货金 XAU/USD — LBMA 官方免费 JSON(prices.lbma.org.uk,无 key)→ data/XAUUSD.csv。
+"""现货金 XAU/USD — LBMA 官方免费 JSON(prices.lbma.org.uk,无 key)→ data/spot/XAUUSD.csv。
 
 源即基准本身:LBMA Gold Price PM 定盘($/盎司,1968-04+,即原 FRED GOLDAMGBD228NLBM
 的上游;FRED 该系列已因 ICE 授权整条下架)。PM 缺的日期用 AM 定盘补
@@ -13,7 +13,7 @@
   - Stooq /q/d/l/?s=xauusd 现要求 apikey + JS proof-of-work 验证,cron 不可用;
   - yfinance XAUUSD=X 已 404;GC=F 是 COMEX 期货且仅 2000-08+,只作人工核对参考。
 
-落地 data/XAUUSD.csv(date,c),read_price("XAUUSD")["c"] 即现货金,
+落地 data/spot/XAUUSD.csv(date,c),read_price("XAUUSD")["c"] 即现货金,
 供 copper_gold_ppi / oil_gold_cpi 替换 GLD(GLD≈金/10.85 且随 0.4%/年费率漂移,仅 2004+)。
 全量覆盖、幂等;带 prices.py 同款守门(新数据回退/缩水则保留旧文件)。每天可跑刷新。"""
 from __future__ import annotations
@@ -26,10 +26,10 @@ import time
 
 from curl_cffi import requests as _curl
 
-from _common import DATA_DIR
+from _common import SPOT_DIR
 
 LBMA = "https://prices.lbma.org.uk/json/gold_{fix}.json"
-OUT = os.path.join(DATA_DIR, "XAUUSD.csv")
+OUT = os.path.join(SPOT_DIR, "XAUUSD.csv")
 
 
 def _fetch_json(url: str) -> list[dict]:
@@ -85,6 +85,7 @@ def main():
         if df.index.max() < old.index.max() or len(df) < 0.95 * len(old):
             raise RuntimeError(f"新数据回退/缩水({len(df)} rows ..{df.index.max().date()} "
                                f"vs 旧 {len(old)} rows ..{old.index.max().date()}),保留旧文件")
+    os.makedirs(SPOT_DIR, exist_ok=True)
     df.to_csv(OUT)
     print(f"OK  XAUUSD              现货金(LBMA)  {len(df):>6} rows  "
           f"{df.index.min().date()}..{df.index.max().date()}  last={df['c'].iloc[-1]:.2f} USD/oz")

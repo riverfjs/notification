@@ -5,8 +5,8 @@ fetch/cache logic lives in ONE place. Each fetcher overwrites its CSV with the F
 series on every run, so it is idempotent and safe to cron daily.
 
 FRED data goes through the OFFICIAL FRED API (api.stlouisfed.org) with an API key — no
-fallback, no scraping. Outputs go to ../data/macro/<name>.csv ; the price cache (for
-breadth/sector) is ../data/.
+fallback, no scraping. Outputs go to ../data/macro/<name>.csv ; price caches live under
+../data/tickers/ and spot series live under ../data/spot/.
 """
 from __future__ import annotations
 
@@ -21,8 +21,12 @@ import pandas as pd
 
 UA = {"User-Agent": "feeds-macro-etl/1.0 (personal research)", "Accept": "*/*"}
 HERE = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.path.normpath(os.path.join(HERE, "..", "data"))        # existing price cache
-MACRO_DIR = os.path.join(DATA_DIR, "macro")                          # our output
+DATA_DIR = os.path.normpath(os.path.join(HERE, "..", "data"))
+MACRO_DIR = os.path.join(DATA_DIR, "macro")                          # chart outputs
+TICKER_DIR = os.path.join(DATA_DIR, "tickers")                       # yfinance OHLCV cache
+SPOT_DIR = os.path.join(DATA_DIR, "spot")                            # single-column spot prices
+CACHE_DIR = os.path.join(DATA_DIR, "cache")                          # non-chart feed caches
+SP500_CACHE_DIR = os.path.join(CACHE_DIR, "sp500")
 FRED_API = "https://api.stlouisfed.org/fred/series/observations"
 
 
@@ -151,9 +155,19 @@ def williams_index(s: pd.Series, window: int) -> pd.Series:
     return (s - lo) / rng * 100.0
 
 
+def price_path(ticker: str) -> str:
+    """Locate a market price series by logical ticker name."""
+    for root in (TICKER_DIR, SPOT_DIR):
+        path = os.path.join(root, f"{ticker}.csv")
+        if os.path.exists(path):
+            return path
+    tried = ", ".join(os.path.join(root, f"{ticker}.csv") for root in (TICKER_DIR, SPOT_DIR))
+    raise FileNotFoundError(f"price cache not found for {ticker}: tried {tried}")
+
+
 def read_price(ticker: str) -> pd.DataFrame:
-    """Read an existing OHLCV price cache CSV from ../data/<ticker>.csv."""
-    return pd.read_csv(os.path.join(DATA_DIR, f"{ticker}.csv"), index_col=0, parse_dates=True)
+    """Read an existing market price cache CSV by ticker/spot name."""
+    return pd.read_csv(price_path(ticker), index_col=0, parse_dates=True)
 
 
 def save(df: pd.DataFrame, name: str, label: str = "") -> str:

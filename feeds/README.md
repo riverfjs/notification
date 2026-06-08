@@ -1,7 +1,7 @@
 # feeds/ — 宏观 & 市场情绪数据层(30 个模块,每日自动更新)
 
 每个脚本独立负责一类数据:从官方免费源抓**全历史**,落成一个同名 CSV
-(`../data/macro/<脚本名>.csv`;基础价格缓存在 `../data/`)。全部幂等 —— 重复跑、
+(`../data/macro/<脚本名>.csv`;基础价格缓存在 `../data/tickers/` 和 `../data/spot/`)。全部幂等 —— 重复跑、
 断了重跑都安全,每次运行把整条序列刷新到最新。覆盖**就业消费、地产供给、通胀
 利率、信用、情绪、宽度板块**六大类,作为仪表盘 / 择时信号 / 回测的统一数据底座。
 
@@ -23,9 +23,9 @@ uv run feeds/rates.py          # 任意单个
 ### 基础层(3)— 价格缓存,供下游模块读取
 | 脚本 | 产出 | 内容 |
 |---|---|---|
-| prices | data/ 下 30 个 ticker 的日线 OHLCV | SPY/QQQ/DIA/IWM、11 个 GICS 行业 ETF、VIX/VXO、GLD/TLT/HYG 等(yfinance 复权价);带防回退守门:新数据为空/倒退/缩水则保留旧文件 |
-| spot_gold | data/XAUUSD.csv(date,c) | 现货金 $/盎司:LBMA PM 定盘,1968+,PM 缺日用 AM 补(站点前置 Imunify360 对数据中心 IP **间歇拦截**:curl_cffi 仿 Chrome + 5 次退避;彻底失败则保留全量历史软跳过、下次自愈) |
-| spot_copper | data/COPPER.csv(date,c) | 铜 $/公吨:LME 现汇结算 2008+(Westmetall 免费档)⊕ HG=F×2204.62 补 2000-2007 |
+| prices | data/tickers/ 下 30 个 ticker 的日线 OHLCV | SPY/QQQ/DIA/IWM、11 个 GICS 行业 ETF、VIX/VXO、GLD/TLT/HYG 等(yfinance 复权价);带防回退守门:新数据为空/倒退/缩水则保留旧文件 |
+| spot_gold | data/spot/XAUUSD.csv(date,c) | 现货金 $/盎司:LBMA PM 定盘,1968+,PM 缺日用 AM 补(站点前置 Imunify360 对数据中心 IP **间歇拦截**:curl_cffi 仿 Chrome + 5 次退避;彻底失败则保留全量历史软跳过、下次自愈) |
+| spot_copper | data/spot/COPPER.csv(date,c) | 铜 $/公吨:LME 现汇结算 2008+(Westmetall 免费档)⊕ HG=F×2204.62 补 2000-2007 |
 
 ### 宏观基本面(14,FRED 官方 API)
 | 脚本 | 列 | 这是什么 | 历史 |

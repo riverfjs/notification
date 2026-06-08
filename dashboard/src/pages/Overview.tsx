@@ -7,7 +7,7 @@ type Kpi = KpiSpec & { nav: string };
 /** 市场温度:情绪/波动/宽度/信用 —— 点击直达对应图表并高亮 */
 const MARKET: Kpi[] = [
   { title: "CNN Fear & Greed", csv: "macro/fng", col: "fng", digits: 0, goodWhen: "high", hint: "≤25 恐慌 / ≥75 贪婪", nav: "sentiment/fng" },
-  { title: "VIX", csv: "VIX", col: "c", goodWhen: "low", hint: ">30 高波动", nav: "rates/credit" },
+  { title: "VIX", csv: "tickers/VIX", col: "c", goodWhen: "low", hint: ">30 高波动", nav: "rates/credit" },
   { title: "标普500 > MA200 占比", csv: "macro/breadth_official", col: "pct_above_ma200", fmt: "pct", digits: 1, goodWhen: "high", hint: "≤15 washout / ≥85 过热", nav: "breadth/sp500-breadth" },
   { title: "股票 Put/Call", csv: "macro/putcall_cboe", col: "equity_pc", goodWhen: "low", hint: ">1 恐慌 / <0.5 自满", nav: "sentiment/putcall" },
   { title: "高收益债 OAS", csv: "macro/credit_spread", col: "hy_oas_full", fmt: "pct", goodWhen: "low", hint: ">6% 信用承压", nav: "rates/credit" },

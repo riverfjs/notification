@@ -1,7 +1,7 @@
 /** 图表声明式规格:registry 里每张图一个 ChartSpec,ChartCard 负责渲染。 */
 
 export interface SeriesSpec {
-  /** 数据文件,相对 data/(不带 .csv),如 "macro/rates" */
+  /** 数据文件,相对 data/(不带 .csv),如 "macro/rates" 或 "tickers/VIX" */
   csv: string;
   col: string;
   name: string;

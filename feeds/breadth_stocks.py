@@ -7,12 +7,12 @@
 
 P13 升级:成分不再是「当前清单回溯套用」,而是 fja05680/sp500(GitHub,1996+ 历史成分)
 的时点(point-in-time)成员掩码 —— 每天只统计当天确实在指数里的股票:
-  1) Wikipedia 当前成分(yf_symbol 映射 + 历史文件之后的尾段成员)→ data/sp500_members.csv
+  1) Wikipedia 当前成分(yf_symbol 映射 + 历史文件之后的尾段成员)→ data/cache/sp500/sp500_members.csv
   2) fja05680/sp500 最新日期版 CSV(date,tickers;GitHub API 自动发现文件名)
-     → data/sp500_members_hist.csv(守门:行数不回退)
+     → data/cache/sp500/sp500_members_hist.csv(守门:行数不回退)
   3) yfinance 面板 = 当前成分(每次全量重拉)+ 历史成分中已退市者
-     (只在 yfinance 真的有数据时并入;查过没有的记入 data/sp500_px_unavail.txt 不再重试;
-     已并入面板的死票后续 run 直接沿用旧列,不重拉)→ data/sp500_px.csv(向后兼容:
+     (只在 yfinance 真的有数据时并入;查过没有的记入 data/cache/sp500/sp500_px_unavail.txt 不再重试;
+     已并入面板的死票后续 run 直接沿用旧列,不重拉)→ data/cache/sp500/sp500_px.csv(向后兼容:
      当前成分列仍在,只是多了死票列)
      ★ 价格口径 = auto_adjust=False 的 Close:拆股已重算、股息不复权(图表惯例)。
        官方 $S5xx 正是该口径 —— 实测股息复权价会把 MA 压低 → 宽度系统性高估 +2~3pp
@@ -47,12 +47,12 @@ import time
 import numpy as np
 import pandas as pd
 
-from _common import DATA_DIR, MACRO_DIR, _get, save
+from _common import MACRO_DIR, SP500_CACHE_DIR, _get, save
 
-MEMBERS_CSV = os.path.join(DATA_DIR, "sp500_members.csv")
-MEMBERS_HIST_CSV = os.path.join(DATA_DIR, "sp500_members_hist.csv")
-PANEL_CSV = os.path.join(DATA_DIR, "sp500_px.csv")
-UNAVAIL_TXT = os.path.join(DATA_DIR, "sp500_px_unavail.txt")
+MEMBERS_CSV = os.path.join(SP500_CACHE_DIR, "sp500_members.csv")
+MEMBERS_HIST_CSV = os.path.join(SP500_CACHE_DIR, "sp500_members_hist.csv")
+PANEL_CSV = os.path.join(SP500_CACHE_DIR, "sp500_px.csv")
+UNAVAIL_TXT = os.path.join(SP500_CACHE_DIR, "sp500_px_unavail.txt")
 OFFICIAL_CSV = os.path.join(MACRO_DIR, "breadth_official.csv")
 WIKI = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
 GH_API = "https://api.github.com/repos/fja05680/sp500/contents/"
@@ -62,7 +62,7 @@ CHUNK = 50
 
 
 def fetch_members() -> pd.DataFrame:
-    """Wikipedia 当前成分表(id=constituents)→ DataFrame,落 data/sp500_members.csv。"""
+    """Wikipedia 当前成分表(id=constituents)→ DataFrame,落 data/cache/sp500/sp500_members.csv。"""
     html = _get(WIKI).text
     tables = pd.read_html(io.StringIO(html), attrs={"id": "constituents"})
     df = tables[0]
@@ -72,6 +72,7 @@ def fetch_members() -> pd.DataFrame:
     df["symbol"] = df["symbol"].astype(str).str.strip()
     df["yf_symbol"] = df["symbol"].str.replace(".", "-", regex=False)  # BRK.B -> BRK-B
     df = df.sort_values("symbol").reset_index(drop=True)
+    os.makedirs(SP500_CACHE_DIR, exist_ok=True)
     df.to_csv(MEMBERS_CSV, index=False)
     print(f"OK  sp500_members       {len(df)} 成分  {df['gics_sector'].nunique()} sectors -> {MEMBERS_CSV}")
     return df
@@ -97,6 +98,7 @@ def fetch_membership_history() -> pd.DataFrame:
             old_n = sum(1 for _ in open(MEMBERS_HIST_CSV)) - 1
             if len(df) < old_n:
                 raise RuntimeError(f"新成分历史 {len(df)} 行 < 旧 {old_n},拒绝覆盖")
+        os.makedirs(SP500_CACHE_DIR, exist_ok=True)
         df.to_csv(MEMBERS_HIST_CSV, index=False)
         print(f"OK  sp500_members_hist  {len(df)} 事件行  {df['date'].iloc[0]}..{df['date'].iloc[-1]}"
               f" -> {MEMBERS_HIST_CSV}")
@@ -115,6 +117,7 @@ def _load_unavail() -> set[str]:
 
 
 def _save_unavail(s: set[str]):
+    os.makedirs(SP500_CACHE_DIR, exist_ok=True)
     with open(UNAVAIL_TXT, "w") as f:
         f.write("# ex-S&P500 tickers confirmed ABSENT from yfinance (skip re-trying).\n")
         f.write("# Delete a line to force a re-check on next breadth_stocks.py run.\n")
@@ -191,6 +194,7 @@ def fetch_panel(members: pd.DataFrame, hist_union: set[str]) -> pd.DataFrame:
             cur_px = cur_px.join(old[carry], how="outer")
             print(f"  carry-over 旧列 {len(carry)}(退市/先前死票,不重拉)")
     px = cur_px.sort_index()
+    os.makedirs(SP500_CACHE_DIR, exist_ok=True)
     px.to_csv(PANEL_CSV, float_format="%.4f")
     print(f"OK  sp500_px            {px.shape[1]} tickers, {len(px)} rows "
           f"{px.index[0].date()}..{px.index[-1].date()} -> {PANEL_CSV} "

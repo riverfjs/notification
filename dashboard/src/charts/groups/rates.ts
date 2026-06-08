@@ -28,7 +28,7 @@ export const rates: GroupSpec = {
       series: [
         { csv: "macro/credit_spread", col: "hy_oas_full", name: "高收益债 OAS" },
         { csv: "macro/credit_spread", col: "baa_10y_spread", name: "Baa−10Y 利差" },
-        { csv: "VIX", col: "c", name: "VIX", axis: 1 },          // yfinance 当日收盘(FRED VIXCLS T+1 滞后)
+        { csv: "tickers/VIX", col: "c", name: "VIX", axis: 1 },  // yfinance 当日收盘(FRED VIXCLS T+1 滞后)
         { csv: "macro/credit_spread", col: "hy_stress", name: "HYG/TLT 回撤(压力)", axis: 1, off: true },
       ],
       y0: { name: "利差", fmt: "pct" },
