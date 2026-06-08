@@ -90,6 +90,7 @@ const FRED_SERIES: Record<string, Record<string, string[]>> = {
   },
   "macro/jobs_monthly": {
     nonfarm_payrolls_k: ["PAYEMS"],
+    nonfarm_payrolls_change_k: ["PAYEMS"],
     unemployment_rate_pct: ["UNRATE"],
   },
   "macro/claims_weekly": {

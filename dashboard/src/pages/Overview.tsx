@@ -15,7 +15,7 @@ const OVERRIDES: Record<string, Partial<KpiSpec>> = {
   "macro/credit_spread:hy_stress": { title: "HY 压力", digits: 2, goodWhen: "low" },
   "macro/rates:curve_10y_2y": { title: "10Y−2Y 期限利差", fmt: "pct", goodWhen: "high", hint: "<0 倒挂" },
   "macro/jobs_monthly:unemployment_rate_pct": { title: "失业率", fmt: "pct", digits: 1, goodWhen: "low" },
-  "macro/jobs_monthly:nonfarm_payrolls_k": { title: "非农就业", digits: 0, hint: "千人" },
+  "macro/jobs_monthly:nonfarm_payrolls_change_k": { title: "非农变化", digits: 0, goodWhen: "high", hint: "千人" },
   "macro/claims_weekly:initial_claims_weekly": { title: "初请失业金", scale: 0.001, digits: 0, goodWhen: "low", hint: "千人/周" },
   "macro/ism_pmi:ism_pmi": { title: "ISM 制造业 PMI", digits: 1, goodWhen: "high", hint: "50 荣枯线" },
   "macro/naaim:naaim_mean": { title: "NAAIM 平均仓位", digits: 0, hint: "≤20 防御 / ≥90 拥挤" },
@@ -124,7 +124,7 @@ const OVERVIEW_SECTIONS: { label: string; keys: KpiKey[] }[] = [
   {
     label: "增长就业",
     keys: [
-      "macro/jobs_monthly:nonfarm_payrolls_k",
+      "macro/jobs_monthly:nonfarm_payrolls_change_k",
       "macro/claims_weekly:initial_claims_weekly",
       "macro/wei:weekly_economic_index",
       "macro/us_trade_orders:trade_balance_goods_services",

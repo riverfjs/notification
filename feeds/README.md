@@ -27,7 +27,7 @@ uv run feeds/rates.py          # 任意单个
 | prices.py | 刷新 `data/tickers/*.csv` 日线价格缓存 | yfinance,全量复权价重拉 |
 | spot_gold.py | `data/spot/XAUUSD.csv` 现货金 | LBMA gold AM/PM 官方 JSON;curl_cffi Chrome TLS |
 | spot_copper.py | `data/spot/COPPER.csv` 铜价 | Westmetall LME cash archive + yfinance `HG=F` 补旧段 |
-| jobs_monthly.py | 非农、失业率 | FRED `PAYEMS`,`UNRATE` |
+| jobs_monthly.py | 非农就业人数、非农变化、失业率 | FRED `PAYEMS`,`UNRATE` |
 | claims_weekly.py | 初请失业金 | FRED `ICSA` |
 | personal_finance.py | 个人收入、实际可支配收入、储蓄率 | FRED `PI`,`DSPIC96`,`PSAVERT` |
 | home_sales_prices.py | 新房销售、成屋销售、Case-Shiller | FRED `HSN1F`,`CSUSHPINSA`;成屋销售用 FRED 当前窗口 + `data/cache/ehs_archive.csv` |
@@ -73,7 +73,7 @@ uv run feeds/rates.py          # 任意单个
 ### 宏观基本面(18,FRED / 官方发布源)
 | 脚本 | 列 | 这是什么 | 历史 |
 |---|---|---|---|
-| jobs_monthly | nonfarm_payrolls_k, unemployment_rate_pct | 非农就业(千人)与失业率 | 1948 月 |
+| jobs_monthly | nonfarm_payrolls_k, nonfarm_payrolls_change_k, unemployment_rate_pct | 非农就业人数(千人)、非农变化(千人)与失业率 | 1948 月 |
 | claims_weekly | initial_claims_weekly | 初请失业金 —— 最快的就业转折先行指标 | 1967 周 |
 | personal_finance | personal_income, real_disposable_income, personal_saving_rate_pct | 收入 / 实际可支配收入 / 储蓄率,消费余力 | 1959 月 |
 | home_sales_prices | new_home_sales_k, existing_home_sales_k, case_shiller_natl | 新房/成屋销售(千套年化)+ Case-Shiller 全国房价指数 | 1963(成屋 2013)月 |

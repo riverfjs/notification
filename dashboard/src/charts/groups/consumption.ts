@@ -12,6 +12,7 @@ export const consumption: GroupSpec = {
       series: [
         { csv: "macro/jobs_monthly", col: "unemployment_rate_pct", name: "失业率" },
         { csv: "macro/claims_weekly", col: "initial_claims_weekly", name: "初请失业金(千人/周)", axis: 1, scale: 0.001 },
+        { csv: "macro/jobs_monthly", col: "nonfarm_payrolls_change_k", name: "非农变化(千人)", axis: 1 },
       ],
       y0: { name: "失业率", fmt: "pct" },
       y1: { name: "千人" },
