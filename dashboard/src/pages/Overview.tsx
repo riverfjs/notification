@@ -170,7 +170,7 @@ export function Overview({ onNav }: { onNav: (path: string) => void }) {
     <div className="max-w-[1800px] space-y-6">
       <section className="space-y-2">
         <div className="text-[11px] tracking-widest text-muted-foreground/60 num uppercase">核心状态</div>
-        <div className="grid grid-cols-2 md:grid-cols-5 2xl:grid-cols-10 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3">
           {core.map((k, i) => (
             <div key={`${k.nav}:${k.csv}:${k.col}`} style={{ animationDelay: `${i * 35}ms` }} className="rise h-full">
               <KpiCard spec={k} onClick={() => onNav(k.nav)} />

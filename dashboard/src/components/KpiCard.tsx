@@ -58,25 +58,29 @@ export function KpiCard({ spec, onClick }: { spec: KpiSpec; onClick?: () => void
       onClick={onClick}
       onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onClick?.()}
       title={`${spec.title}${spec.hint ? ` · ${spec.hint}` : ""}`}
-      className="h-full gap-1.5 py-4 cursor-pointer hover:border-input transition-colors"
+      className="h-full overflow-hidden gap-1.5 py-4 cursor-pointer hover:border-input transition-colors"
     >
-      <CardHeader className="px-4 gap-1">
-        <CardDescription className="text-xs truncate">{spec.title}</CardDescription>
-        <CardTitle className="num text-2xl whitespace-nowrap">
+      <CardHeader className="min-w-0 px-4 gap-1 has-data-[slot=card-action]:grid-cols-[minmax(0,1fr)_auto]">
+        <CardDescription className="min-w-0 text-xs truncate">{spec.title}</CardDescription>
+        <CardTitle className="num min-w-0 truncate text-2xl whitespace-nowrap">
           {err ? "—" : v ? fmtValue(v.value) : "…"}
           {spec.fmt === "pct" && !err && v ? <span className="text-sm">%</span> : null}
         </CardTitle>
         {delta !== null && (
-          <CardAction>
-            <Badge variant="outline" className={`num ${valueCls}`} title={`上一期变化: ${delta >= 0 ? "+" : ""}${delta.toFixed(d)}`}>
+          <CardAction className="max-w-[5.5rem] overflow-hidden">
+            <Badge
+              variant="outline"
+              className={`num max-w-full overflow-hidden text-ellipsis whitespace-nowrap ${valueCls}`}
+              title={`上一期变化: ${delta >= 0 ? "+" : ""}${delta.toFixed(d)}`}
+            >
               {delta >= 0 ? "+" : ""}
               {fmtValue(delta)}
             </Badge>
           </CardAction>
         )}
       </CardHeader>
-      <CardFooter className="px-4">
-        <span className="num text-[10px] text-muted-foreground/60 truncate">
+      <CardFooter className="min-w-0 px-4">
+        <span className="num min-w-0 max-w-full text-[10px] text-muted-foreground/60 truncate">
           {v?.date ?? ""}
           {spec.hint ? ` · ${spec.hint}` : ""}
         </span>
