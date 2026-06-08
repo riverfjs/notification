@@ -24,6 +24,7 @@ import os
 import sys
 import time
 
+import numpy as np
 import pandas as pd
 
 from _common import TICKER_DIR
@@ -34,6 +35,8 @@ SYMBOL_MAP = {"VIX": "^VIX", "VXO": "^VXO"}
 # COPPER = 现货铜,归 feeds/spot_copper.py 管;FNG_long = 旧研究遗留,已归档到 data/legacy/。
 SKIP = {"FNG_long", "XAUUSD", "COPPER"}
 OHLCV = ["o", "h", "l", "c", "v"]
+PRICE_COLS = ["o", "h", "l", "c"]
+PRICE_NOISE_ABS = 1e-3
 
 
 def discover() -> list[str]:
@@ -67,6 +70,50 @@ def download(symbol: str) -> pd.DataFrame:
     return df.sort_index()
 
 
+def stabilize_overlap(old: pd.DataFrame, new: pd.DataFrame) -> tuple[pd.DataFrame, int, int]:
+    """Keep old overlap rows when yfinance only changed sub-cent float noise.
+
+    yfinance adjusted prices can differ by ~1e-4 between identical full-history
+    requests. Keeping equivalent overlap rows avoids false full-file Git diffs,
+    while real split/dividend/revision changes still pass through.
+    """
+    out = new.copy()
+    overlap = old.index.intersection(new.index)
+    if overlap.empty:
+        return out, 0, 0
+
+    old_px = old.loc[overlap, PRICE_COLS].astype(float)
+    new_px = new.loc[overlap, PRICE_COLS].astype(float)
+    price_material = (new_px - old_px).abs().gt(PRICE_NOISE_ABS).any(axis=1)
+
+    old_v = old.loc[overlap, "v"].fillna(-1).astype(np.int64)
+    new_v = new.loc[overlap, "v"].fillna(-1).astype(np.int64)
+    volume_material = old_v.ne(new_v)
+
+    equivalent = overlap[~(price_material | volume_material)]
+    if len(equivalent):
+        out.loc[equivalent, OHLCV] = old.loc[equivalent, OHLCV]
+    return out, len(equivalent), len(overlap) - len(equivalent)
+
+
+def same_frame(a: pd.DataFrame, b: pd.DataFrame) -> bool:
+    if not a.index.equals(b.index) or list(a.columns) != list(b.columns):
+        return False
+    return bool(np.array_equal(a[OHLCV].to_numpy(), b[OHLCV].to_numpy()))
+
+
+def can_append_only(old: pd.DataFrame, stable: pd.DataFrame, material: int) -> pd.DataFrame:
+    """Return strictly new trailing rows when old text can be preserved."""
+    if material:
+        return pd.DataFrame()
+    if len(old.index.difference(stable.index)):
+        return pd.DataFrame()
+    new_rows = stable.loc[stable.index.difference(old.index)].sort_index()
+    if new_rows.empty or new_rows.index.min() <= old.index.max():
+        return pd.DataFrame()
+    return new_rows
+
+
 def refresh(ticker: str) -> bool:
     if ticker in SKIP:
         print(f"  ! {ticker}: 非 yfinance/ticker 缓存,跳过")
@@ -91,9 +138,20 @@ def refresh(ticker: str) -> bool:
     if len(new) < 0.95 * old_n:
         print(f"  ! {ticker}: 新数据仅 {len(new)} 行 < 旧 {old_n} 的 95%,疑似截断,保留旧缓存")
         return False
-    new.to_csv(path)
-    print(f"  {ticker}: {len(new)} rows {new.index[0].date()}..{new.index[-1].date()}"
-          f"  (was {old_n} rows ..{old_last.date()})")
+    stable, kept, material = stabilize_overlap(old, new)
+    if same_frame(stable, old):
+        print(f"  {ticker}: 无实质变化 {len(new)} rows {new.index[0].date()}..{new.index[-1].date()}"
+              f"  (kept {kept} overlap rows)")
+        return True
+    append_rows = can_append_only(old, stable, material)
+    if not append_rows.empty:
+        append_rows.to_csv(path, mode="a", header=False)
+        print(f"  {ticker}: append {len(append_rows)} rows {append_rows.index[0].date()}..{append_rows.index[-1].date()}"
+              f"  (was {old_n} rows ..{old_last.date()}, kept {kept} overlap rows)")
+        return True
+    stable.to_csv(path)
+    print(f"  {ticker}: {len(stable)} rows {stable.index[0].date()}..{stable.index[-1].date()}"
+          f"  (was {old_n} rows ..{old_last.date()}, kept {kept} overlap rows, material {material})")
     return True
 
 
