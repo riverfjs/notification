@@ -34,20 +34,22 @@ export function KpiCard({ spec, onClick }: { spec: KpiSpec; onClick?: () => void
 
   const d = spec.digits ?? 2;
   const delta = v && v.prev !== null ? v.value - v.prev : null;
+  const displayDelta = delta === null ? null : Number(delta.toFixed(d));
+  const hasDisplayDelta = displayDelta !== null && Math.abs(displayDelta) > 0;
   const fmtValue = (x: number) =>
     spec.compact
       ? x.toLocaleString("en-US", { notation: "compact", maximumFractionDigits: d })
       : x.toFixed(d);
   const deltaCls =
-    delta === null
+    displayDelta === null
       ? "text-muted-foreground"
       : spec.goodWhen === undefined
-        ? delta >= 0 ? "text-up" : "text-down"
-        : (delta >= 0) === (spec.goodWhen === "high")
+        ? displayDelta >= 0 ? "text-up" : "text-down"
+        : (displayDelta >= 0) === (spec.goodWhen === "high")
           ? "text-up"
           : "text-down";
   const valueCls =
-    delta === null || Math.abs(delta) < 1e-12
+    !hasDisplayDelta
       ? "text-muted-foreground"
       : deltaCls;
 
@@ -66,15 +68,15 @@ export function KpiCard({ spec, onClick }: { spec: KpiSpec; onClick?: () => void
           {err ? "—" : v ? fmtValue(v.value) : "…"}
           {spec.fmt === "pct" && !err && v ? <span className="text-sm">%</span> : null}
         </CardTitle>
-        {delta !== null && (
+        {delta !== null && hasDisplayDelta && (
           <CardAction className="max-w-[5.5rem] overflow-hidden">
             <Badge
               variant="outline"
               className={`num max-w-full overflow-hidden text-ellipsis whitespace-nowrap ${valueCls}`}
               title={`上一期变化: ${delta >= 0 ? "+" : ""}${delta.toFixed(d)}`}
             >
-              {delta >= 0 ? "+" : ""}
-              {fmtValue(delta)}
+              {displayDelta >= 0 ? "+" : ""}
+              {fmtValue(displayDelta)}
             </Badge>
           </CardAction>
         )}
