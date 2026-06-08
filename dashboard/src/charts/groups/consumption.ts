@@ -8,11 +8,12 @@ export const consumption: GroupSpec = {
     {
       id: "jobs",
       title: "失业与就业",
-      subtitle: "失业率 vs 初请失业金(衰退的最快先行指标)",
+      subtitle: "失业率、非农就业人数与初请失业金",
       series: [
         { csv: "macro/jobs_monthly", col: "unemployment_rate_pct", name: "失业率" },
-        { csv: "macro/claims_weekly", col: "initial_claims_weekly", name: "初请失业金(千人/周)", axis: 1, scale: 0.001 },
-        { csv: "macro/jobs_monthly", col: "nonfarm_payrolls_change_k", name: "非农变化(千人)", axis: 1 },
+        { csv: "macro/jobs_monthly", col: "nonfarm_payrolls_k", name: "非农就业人数(千人)", axis: 1 },
+        { csv: "macro/claims_weekly", col: "initial_claims_weekly", name: "初请失业金(千人/周)", axis: 1, scale: 0.001, off: true },
+        { csv: "macro/jobs_monthly", col: "nonfarm_payrolls_change_k", name: "非农变化(千人)", axis: 1, off: true },
       ],
       y0: { name: "失业率", fmt: "pct" },
       y1: { name: "千人" },
