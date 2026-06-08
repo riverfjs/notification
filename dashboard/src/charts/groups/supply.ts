@@ -1,6 +1,6 @@
 import type { GroupSpec } from "../types";
 
-/** 地产・供给(3 图) */
+/** 地产・供给 */
 export const supply: GroupSpec = {
   id: "supply",
   title: "地产・供给",
@@ -40,6 +40,32 @@ export const supply: GroupSpec = {
       subtitle: "纽约联储 WEI —— GDP 的周频代理",
       series: [{ csv: "macro/wei", col: "weekly_economic_index", name: "WEI", area: true }],
       y0: { name: "指数" },
+      hLines: [{ value: 0 }],
+      defaultYears: 10,
+    },
+    {
+      id: "us-gdp-trade",
+      title: "美国 GDP 与贸易差额",
+      subtitle: "BEA 实际 GDP 环比折年率 vs Census/BEA 商品服务贸易差额",
+      series: [
+        { csv: "macro/us_growth_releases", col: "real_gdp_qoq_saar", name: "实际 GDP QoQ SAAR" },
+        { csv: "macro/us_trade_orders", col: "trade_balance_goods_services", name: "贸易差额($B)", axis: 1, scale: 0.001 },
+      ],
+      y0: { name: "GDP QoQ SAAR", fmt: "pct" },
+      y1: { name: "$B" },
+      hLines: [{ value: 0 }],
+      defaultYears: 10,
+    },
+    {
+      id: "durable-ex-transport",
+      title: "耐用品订单(剔除运输)",
+      subtitle: "Census ADVM3:新订单金额与月环比",
+      series: [
+        { csv: "macro/us_trade_orders", col: "durable_ex_transport_orders", name: "新订单($B)", scale: 0.001 },
+        { csv: "macro/us_trade_orders", col: "durable_ex_transport_orders_mom", name: "MoM", axis: 1 },
+      ],
+      y0: { name: "$B" },
+      y1: { name: "MoM", fmt: "pct" },
       hLines: [{ value: 0 }],
       defaultYears: 10,
     },

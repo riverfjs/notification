@@ -1,6 +1,6 @@
 import type { GroupSpec } from "../types";
 
-/** 通胀・货币(3 图) */
+/** 通胀・货币 */
 export const inflation: GroupSpec = {
   id: "inflation",
   title: "通胀・货币",
@@ -46,6 +46,50 @@ export const inflation: GroupSpec = {
       y1: { name: "政策利率", fmt: "pct" },
       hLines: [{ value: 2, label: "2% 目标" }],
       defaultYears: 10,
+    },
+    {
+      id: "us-cpi-ppi-mom",
+      title: "美国 CPI / PPI 月环比",
+      subtitle: "BLS 官方发布:季调指数本地计算 MoM",
+      series: [
+        { csv: "macro/us_inflation_releases", col: "cpi_headline_mom", name: "CPI MoM" },
+        { csv: "macro/us_inflation_releases", col: "cpi_core_mom", name: "核心 CPI MoM" },
+        { csv: "macro/us_inflation_releases", col: "ppi_headline_mom", name: "PPI MoM" },
+        { csv: "macro/us_inflation_releases", col: "ppi_core_mom", name: "核心 PPI MoM" },
+        { csv: "macro/us_inflation_releases", col: "ppi_core_ex_food_energy_trade_mom", name: "PPI 去食能贸易 MoM", off: true },
+      ],
+      y0: { name: "MoM", fmt: "pct" },
+      hLines: [{ value: 0 }],
+      defaultYears: 5,
+    },
+    {
+      id: "us-cpi-ppi-yoy",
+      title: "美国 CPI / PPI 同比",
+      subtitle: "BLS 官方发布:季调指数本地计算 YoY",
+      series: [
+        { csv: "macro/us_inflation_releases", col: "cpi_headline_yoy", name: "CPI YoY" },
+        { csv: "macro/us_inflation_releases", col: "cpi_core_yoy", name: "核心 CPI YoY" },
+        { csv: "macro/us_inflation_releases", col: "ppi_headline_yoy", name: "PPI YoY" },
+        { csv: "macro/us_inflation_releases", col: "ppi_core_yoy", name: "核心 PPI YoY" },
+        { csv: "macro/us_inflation_releases", col: "ppi_core_ex_food_energy_trade_yoy", name: "PPI 去食能贸易 YoY", off: true },
+      ],
+      y0: { name: "YoY", fmt: "pct" },
+      hLines: [{ value: 0 }, { value: 2, label: "2%" }],
+      defaultYears: 5,
+    },
+    {
+      id: "us-pce-inflation",
+      title: "美国 PCE 通胀",
+      subtitle: "BEA 官方 NIPA:美联储偏好的通胀指标",
+      series: [
+        { csv: "macro/us_inflation_releases", col: "pce_yoy", name: "PCE YoY" },
+        { csv: "macro/us_inflation_releases", col: "core_pce_yoy", name: "核心 PCE YoY" },
+        { csv: "macro/us_inflation_releases", col: "pce_mom", name: "PCE MoM", off: true },
+        { csv: "macro/us_inflation_releases", col: "core_pce_mom", name: "核心 PCE MoM", off: true },
+      ],
+      y0: { name: "通胀率", fmt: "pct" },
+      hLines: [{ value: 0 }, { value: 2, label: "2%" }],
+      defaultYears: 5,
     },
   ],
 };

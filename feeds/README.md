@@ -1,4 +1,4 @@
-# feeds/ — 宏观 & 市场情绪数据层(30 个模块,每日自动更新)
+# feeds/ — 宏观 & 市场情绪数据层(34 个模块,每日自动更新)
 
 每个脚本独立负责一类数据:从官方免费源抓**全历史**,落成一个同名 CSV
 (`../data/macro/<脚本名>.csv`;基础价格缓存在 `../data/tickers/` 和 `../data/spot/`)。全部幂等 —— 重复跑、
@@ -7,16 +7,59 @@
 
 ## 跑法
 ```bash
-uv run feeds/run_all.py        # 全部 30 个,按依赖排序(prices/spot_gold/spot_copper 在前)
+uv run feeds/run_all.py        # 全部 34 个,按依赖排序(prices/spot_gold/spot_copper 在前)
 uv run feeds/rates.py          # 任意单个
 ```
 - **云端为主**:`.github/workflows/feeds.yml` UTC 周二~六 02:30(= 美东周一~五晚 21:30/22:30,等 CBOE/FRED 当日发布完毕)自动跑并把
   更新的 CSV 提交回仓库;push 改动 `feeds/**` 代码(`.md` 除外)也会触发一轮验证。
   任一模块失败任务标红(`run_all.py` 非零退出),成功模块的数据照常提交。
   本地只 `git pull`,不要再开本地 cron(会互相产生提交冲突)。
-- **FRED key**(FRED 类 14 个模块必需):免费注册 `fredaccount.stlouisfed.org/apikeys`。
+- **FRED key**(FRED 类模块必需):免费注册 `fredaccount.stlouisfed.org/apikeys`。
   本地放 `feeds/.fred_api_key`(已 gitignore)或环境变量 `FRED_API_KEY`;GitHub 上配
   repo secret `FRED_API_KEY`。纯官方 API(api.stlouisfed.org),无回退逻辑。
+- **Census key**(us_trade_orders 必需):免费注册 Census Data API key,本地设环境变量
+  `CENSUS_API_KEY`;GitHub 上配 repo secret `CENSUS_API_KEY`。只走 Census 官方 EITS API,无回退逻辑。
+
+## 脚本数据源速查
+
+| 脚本 | 产出 / 作用 | 主要数据源 |
+|---|---|---|
+| prices.py | 刷新 `data/tickers/*.csv` 日线价格缓存 | yfinance,全量复权价重拉 |
+| spot_gold.py | `data/spot/XAUUSD.csv` 现货金 | LBMA gold AM/PM 官方 JSON;curl_cffi Chrome TLS |
+| spot_copper.py | `data/spot/COPPER.csv` 铜价 | Westmetall LME cash archive + yfinance `HG=F` 补旧段 |
+| jobs_monthly.py | 非农、失业率 | FRED `PAYEMS`,`UNRATE` |
+| claims_weekly.py | 初请失业金 | FRED `ICSA` |
+| personal_finance.py | 个人收入、实际可支配收入、储蓄率 | FRED `PI`,`DSPIC96`,`PSAVERT` |
+| home_sales_prices.py | 新房销售、成屋销售、Case-Shiller | FRED `HSN1F`,`CSUSHPINSA`;成屋销售用 FRED 当前窗口 + `data/cache/ehs_archive.csv` |
+| vehicle_sales.py | 汽车销售 | FRED `TOTALSA`,`ALTSALES`,`LAUTOSA`,`LTRUCKSA` |
+| retail.py | 零售总额、除汽车零售 | FRED `RSAFS`,`RSFSXMV` |
+| housing_supply.py | 建房许可、新开工、新房库存 | FRED `PERMIT`,`HOUST`,`MSACSR` |
+| mfg_orders_pmi.py | 耐用品/制造业订单、费城/纽约联储制造业 | FRED `DGORDER`,`AMTMNO`,`GACDFSA066MSFRBPHI`,`GACDISA066MSFRBNY` |
+| wei.py | 周度经济指数 | FRED `WEI` |
+| us_inflation_releases.py | CPI/PPI/PCE levels、MoM、YoY | BLS Public Data API + BEA NIPA monthly TXT |
+| us_growth_releases.py | 实际 GDP QoQ SAAR | BEA NIPA quarterly TXT |
+| us_trade_orders.py | 贸易差额、耐用品订单剔除运输 | Census EITS `ftd` / `advm3`;需要 `CENSUS_API_KEY`;curl_cffi Chrome TLS |
+| michigan_sentiment.py | UMich 消费者信心、现况/预期、通胀预期 | University of Michigan 官方 CSV;不走 FRED 延迟序列 |
+| copper_gold_ppi.py | 铜金比与 PPI | FRED/IMF 铜和 PPI + `data/spot/XAUUSD.csv` + `data/spot/COPPER.csv` |
+| oil_gold_cpi.py | 油金比与 CPI | FRED WTI/CPI + `data/spot/XAUUSD.csv` |
+| inflation_monetary.py | 盈亏平衡通胀、5y5y、联储目标利率 | FRED `T5YIE`,`T10YIE`,`T5YIFR`,`DFEDTAR`,`DFEDTARU` |
+| rates.py | 国债收益率、有效联邦基金、曲线 | FRED `DGS*`,`DFF`,`T10Y2Y`,`T10Y3M` |
+| credit_spread.py | 信用利差、VIX、HY OAS、HY stress | FRED + Wayback HY OAS 镜像 + yfinance HYG/TLT |
+| ism_pmi.py | ISM 制造业 PMI | Wayback Quandl/MQL5、DBnomics、MQL5 实时页 |
+| naaim.py | NAAIM 主动管理人仓位 | NAAIM 官方 xlsx |
+| cot_sp500.py | 标普500 TFF COT | CFTC Socrata TFF API |
+| cot_nasdaq100.py | 纳指100 TFF COT | CFTC Socrata TFF API |
+| cot_legacy.py | Legacy COT 深历史 | CFTC Socrata Legacy API |
+| aaii.py | AAII 散户情绪 | AAII 官方 xls;GitHub 静态归档/公开页备援 |
+| putcall.py | CBOE Put/Call 历史档 | CBOE CDN archived CSV |
+| putcall_cboe.py | CBOE Put/Call 续作 | CBOE daily market statistics `?dt=` |
+| fng.py | CNN Fear & Greed 与分量 | CNN dataviz API |
+| breadth.py | 行业级市场宽度 | 11 个 GICS SPDR ETF 价格缓存 |
+| breadth_official.py | 标普500 官方 MA 宽度 | Barchart `$S5TW/$S5FI/$S5TH` EOD API |
+| breadth_stocks.py | 时点成分个股宽度 | Wikipedia 当前成分 + fja05680/sp500 历史成分 + yfinance |
+| sector_strength.py | 行业相对强度 | 11 个 GICS SPDR ETF vs SPY 价格缓存 |
+| build_ehs_archive.py | 一次性重建成屋销售历史缓存 | Wayback FRED 快照 + DBnomics NAR git + FRED 当前窗口 |
+| run_all.py | 批量运行所有日常 feed | 本地模块编排,逐个容错 |
 
 ## 模块一览(脚本名 = 输出 CSV 名)
 
@@ -27,7 +70,7 @@ uv run feeds/rates.py          # 任意单个
 | spot_gold | data/spot/XAUUSD.csv(date,c) | 现货金 $/盎司:LBMA PM 定盘,1968+,PM 缺日用 AM 补(站点前置 Imunify360 对数据中心 IP **间歇拦截**:curl_cffi 仿 Chrome + 5 次退避;彻底失败则保留全量历史软跳过、下次自愈) |
 | spot_copper | data/spot/COPPER.csv(date,c) | 铜 $/公吨:LME 现汇结算 2008+(Westmetall 免费档)⊕ HG=F×2204.62 补 2000-2007 |
 
-### 宏观基本面(14,FRED 官方 API)
+### 宏观基本面(18,FRED / 官方发布源)
 | 脚本 | 列 | 这是什么 | 历史 |
 |---|---|---|---|
 | jobs_monthly | nonfarm_payrolls_k, unemployment_rate_pct | 非农就业(千人)与失业率 | 1948 月 |
@@ -39,6 +82,10 @@ uv run feeds/rates.py          # 任意单个
 | housing_supply | building_permits_k, housing_starts_k, months_supply_new | 建房许可 / 新开工 / 新房库存月数,地产供给周期 | 1959 月 |
 | mfg_orders_pmi | durable_goods_orders, mfg_new_orders_total, philly_fed_mfg, ny_fed_mfg | 耐用品与制造业新订单($)+ 费城/纽约联储制造业指数(荣枯线=0) | 1968 月 |
 | wei | weekly_economic_index | 纽约联储周度经济指数,GDP 的周频代理 | 2008 周 |
+| us_inflation_releases | CPI/PPI/PCE levels + MoM / YoY | BLS CPI/PPI + BEA PCE/Core PCE 官方发布 | PCE 1959 / CPI-PPI 2000+ 月 |
+| us_growth_releases | real_gdp_qoq_saar | BEA 实际 GDP 环比折年率 | 1947 季 |
+| us_trade_orders | trade_balance_goods_services, durable_ex_transport_orders, durable_ex_transport_orders_mom | Census 贸易差额 + 耐用品订单剔除运输 | 2016 月 |
+| michigan_sentiment | sentiment, current_conditions, expectations, inflation_1y, inflation_5y | UMich 官方消费者信心与通胀预期 CSV | 当前公开近月 |
 | copper_gold_ppi | copper_usd_mt, ppi_all_commod, copper_gold_ratio(月)+ copper_fut_usd_mt, copper_gold_ratio_daily(日) | **铜金比**(吨铜值多少盎司金):升=再通胀/risk-on,降=避险;对照 PPI | 月 1992 / 日 2000 |
 | oil_gold_cpi | wti_usd_bbl, cpi_all_urban, gold_usd_oz, oil_gold_ratio | **油金比**(桶油值多少盎司金)与 CPI,能源通胀温度计 | 1986 日(比率) |
 | inflation_monetary | breakeven_5y, breakeven_10y, fwd_5y5y_infl, fed_funds_target | 盈亏平衡通胀预期 + 5y5y 远期 + 联储目标利率(DFEDTAR⊕DFEDTARU 拼接单列) | 1982 日(预期 2003) |
@@ -71,7 +118,7 @@ uv run feeds/rates.py          # 任意单个
 - **COT 两套口径并存**:cot_sp500/cot_nasdaq100 = TFF 分类 + Williams 0-100(结构分析用);cot_legacy = 传统「非商业净−商业净」且回溯 1986。底层净持仓均与 CFTC 官方逐位一致。
 - **credit_spread**:hy_oas_full 镜像段冻结于 2025-11,每次跑与官方 API 重叠段逐位核对,不一致自动降级 API-only。
 - **ism_pmi 混合 vintage**(1948-2016 修订值 / 2017+ 当期值,±0.5 典型差)——画图/研究够用,逐点回测发布意外不行。
-- **成屋销售**(existing_home_sales_k):FRED 被 NAR 限制为滚动 13 个月窗口,全历史靠 `feeds/ehs_archive.csv` 镜像(2013+,API 窗口自动回写续期);历史段偏差有界(mean 0.82%/max 2.81%)。
+- **成屋销售**(existing_home_sales_k):FRED 被 NAR 限制为滚动 13 个月窗口,全历史靠 `data/cache/ehs_archive.csv` 镜像(2013+,API 窗口自动回写续期);历史段偏差有界(mean 0.82%/max 2.81%)。
 - **putcall + putcall_cboe = 连续的 CBOE 聚合口径**,但两段分属 CBOE 新老统计系统、无重叠段可证同基 —— 拼长图在 2019-10 标注「统计系统切换」。**单标的** put/call 查询是独立工具 `pcr/`(仓库根目录),不在本管线内。
 - **fng**:CNN API 自己的 2020-09~2021-01 回填段很脏(成段 50.0 占位 + 异常值)——画图无妨,做信号从 2021-02 起算。
 - **冻结序列**(日志里日期永不前进,属正常):VXO ..2021-09-23(CBOE 停止发布;它是覆盖 1987 股灾的唯一免费波动率序列,1990 后用 VIX)、putcall ..2019-10(由 putcall_cboe 续)。

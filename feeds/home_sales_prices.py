@@ -6,7 +6,7 @@
 """房屋銷售 & 房價 — 官方 FRED API + 成屋销售镜像拼接。月频。每天可跑刷新。
 
 成屋销售(NAR,SAAR):FRED 的 EXHOSLUSM495S 被 NAR 授权限制为「滚动 13 个月」窗口。
-全历史 2013-01+ 来自 feeds/ehs_archive.csv,由 build_ehs_archive.py 构建,口径为
+全历史 2013-01+ 来自 data/cache/ehs_archive.csv,由 build_ehs_archive.py 构建,口径为
 「单 vintage + 重订 seam」两段(P14,2026-06-07 调研定稿):
   - 2025-02 起 = 官方当前单一 vintage(FRED API 窗口 ∪ 2026-03-22 fredgraph 快照,
     同属 2026-02 年度重订后家族,重叠段与 API 逐位一致);唯一 seam 在 2025-01/02。
@@ -16,7 +16,7 @@
     历史段与真·单一 vintage 的偏差有界且很小。真·单一 vintage 免费全史不存在(fredgraph 全史快照
     /ALFRED vintage 接口/DBnomics 当前序列三路线均实测排除,详见 build 脚本头注)。
 本脚本每次运行用官方 API 的当前窗口覆盖/追加镜像(官方值视为最新 vintage 回写
-ehs_archive.csv),窗口滚动也不会丢月份。
+data/cache/ehs_archive.csv),窗口滚动也不会丢月份。
 
 其余:新房销售 HSN1F(1963+)、Case-Shiller 全国房价指数 CSUSHPINSA(1987+),
 深历史无授权限制。单位:两个销售列均为「千套、年化」。"""
@@ -26,9 +26,9 @@ from datetime import date
 
 import pandas as pd
 
-from _common import HERE, fred, save
+from _common import CACHE_DIR, fred, save
 
-EHS_ARCHIVE = os.path.join(HERE, "ehs_archive.csv")
+EHS_ARCHIVE = os.path.join(CACHE_DIR, "ehs_archive.csv")
 
 
 def existing_home_sales() -> pd.Series:
@@ -55,7 +55,7 @@ def existing_home_sales() -> pd.Series:
 
     s = pd.Series({pd.Timestamp(d): float(v[0]) for d, v in arch.items()}).sort_index()
     if s.empty:
-        raise RuntimeError("成屋销售为空:feeds/ehs_archive.csv 缺失且 API 无数据"
+        raise RuntimeError("成屋销售为空:data/cache/ehs_archive.csv 缺失且 API 无数据"
                            "(先跑 build_ehs_archive.py 重建镜像)")
     return s
 

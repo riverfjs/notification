@@ -1,6 +1,6 @@
 import type { GroupSpec } from "../types";
 
-/** 消费・就业(5 图) */
+/** 消费・就业 */
 export const consumption: GroupSpec = {
   id: "consumption",
   title: "消费・就业",
@@ -70,6 +70,22 @@ export const consumption: GroupSpec = {
       y1: { name: "$B" },
       hLines: [{ value: 0 }],
       defaultYears: 10,
+    },
+    {
+      id: "michigan-sentiment",
+      title: "密歇根消费者信心",
+      subtitle: "UMich 官方消费者信心、现况、预期与通胀预期",
+      series: [
+        { csv: "macro/michigan_sentiment", col: "sentiment", name: "消费者信心" },
+        { csv: "macro/michigan_sentiment", col: "current_conditions", name: "当前状况" },
+        { csv: "macro/michigan_sentiment", col: "expectations", name: "消费者预期" },
+        { csv: "macro/michigan_sentiment", col: "inflation_1y", name: "1年通胀预期", axis: 1, off: true },
+        { csv: "macro/michigan_sentiment", col: "inflation_5y", name: "5年通胀预期", axis: 1, off: true },
+      ],
+      y0: { name: "指数" },
+      y1: { name: "通胀预期", fmt: "pct" },
+      note: "UMich 主站公开 CSV 提供最新发布与近月数据;FRED 的 UMCSENT 延迟,不作为本数据源。",
+      defaultYears: 3,
     },
   ],
 };

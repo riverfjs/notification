@@ -18,6 +18,54 @@ const yahoo = (symbol: string): SourceLink => ({
   url: `https://finance.yahoo.com/quote/${symbol}/history`,
 });
 
+const BLS_CPI: SourceLink[] = [{
+  label: "BLS CPI",
+  title: "BLS CPI-U official time series",
+  url: "https://data.bls.gov/timeseries/CUSR0000SA0",
+}, {
+  label: "BLS Core CPI",
+  title: "BLS CPI-U less food and energy official time series",
+  url: "https://data.bls.gov/timeseries/CUSR0000SA0L1E",
+}];
+
+const BLS_PPI: SourceLink[] = [{
+  label: "BLS PPI",
+  title: "BLS PPI final demand official time series",
+  url: "https://data.bls.gov/timeseries/WPSFD4",
+}, {
+  label: "BLS Core PPI",
+  title: "BLS PPI final demand less foods and energy official time series",
+  url: "https://data.bls.gov/timeseries/WPSFD49104",
+}, {
+  label: "BLS PPI ex F/E/T",
+  title: "BLS PPI final demand less foods, energy, and trade services official time series",
+  url: "https://data.bls.gov/timeseries/WPSFD49116",
+}];
+
+const BEA_PCE: SourceLink[] = [{
+  label: "BEA NIPA M",
+  title: "BEA official monthly NIPA release TXT",
+  url: "https://apps.bea.gov/national/Release/TXT/NipaDataM.txt",
+}];
+
+const BEA_GDP: SourceLink[] = [{
+  label: "BEA NIPA Q",
+  title: "BEA official quarterly NIPA release TXT",
+  url: "https://apps.bea.gov/national/Release/TXT/NipaDataQ.txt",
+}];
+
+const CENSUS_FTD: SourceLink[] = [{
+  label: "Census FTD",
+  title: "Census EITS FTD API examples; data calls require an API key",
+  url: "https://api.census.gov/data/timeseries/eits/ftd/examples.html",
+}];
+
+const CENSUS_ADVM3: SourceLink[] = [{
+  label: "Census ADVM3",
+  title: "Census EITS ADVM3 API examples; data calls require an API key",
+  url: "https://api.census.gov/data/timeseries/eits/advm3/examples.html",
+}];
+
 const FRED_SERIES: Record<string, Record<string, string[]>> = {
   "macro/rates": {
     ust_3m: ["DGS3MO"],
@@ -95,6 +143,56 @@ const FRED_SERIES: Record<string, Record<string, string[]>> = {
 
 const SERIES_SOURCES: Record<string, SourceLink[]> = {
   "tickers/VIX:c": [yahoo("%5EVIX")],
+  "macro/us_inflation_releases:cpi_headline": BLS_CPI,
+  "macro/us_inflation_releases:cpi_headline_mom": BLS_CPI,
+  "macro/us_inflation_releases:cpi_headline_yoy": BLS_CPI,
+  "macro/us_inflation_releases:cpi_core": BLS_CPI,
+  "macro/us_inflation_releases:cpi_core_mom": BLS_CPI,
+  "macro/us_inflation_releases:cpi_core_yoy": BLS_CPI,
+  "macro/us_inflation_releases:ppi_headline": BLS_PPI,
+  "macro/us_inflation_releases:ppi_headline_mom": BLS_PPI,
+  "macro/us_inflation_releases:ppi_headline_yoy": BLS_PPI,
+  "macro/us_inflation_releases:ppi_core": BLS_PPI,
+  "macro/us_inflation_releases:ppi_core_mom": BLS_PPI,
+  "macro/us_inflation_releases:ppi_core_yoy": BLS_PPI,
+  "macro/us_inflation_releases:ppi_core_ex_food_energy_trade": BLS_PPI,
+  "macro/us_inflation_releases:ppi_core_ex_food_energy_trade_mom": BLS_PPI,
+  "macro/us_inflation_releases:ppi_core_ex_food_energy_trade_yoy": BLS_PPI,
+  "macro/us_inflation_releases:pce": BEA_PCE,
+  "macro/us_inflation_releases:pce_mom": BEA_PCE,
+  "macro/us_inflation_releases:pce_yoy": BEA_PCE,
+  "macro/us_inflation_releases:core_pce": BEA_PCE,
+  "macro/us_inflation_releases:core_pce_mom": BEA_PCE,
+  "macro/us_inflation_releases:core_pce_yoy": BEA_PCE,
+  "macro/us_growth_releases:real_gdp_qoq_saar": BEA_GDP,
+  "macro/us_trade_orders:trade_balance_goods_services": CENSUS_FTD,
+  "macro/us_trade_orders:durable_ex_transport_orders": CENSUS_ADVM3,
+  "macro/us_trade_orders:durable_ex_transport_orders_mom": CENSUS_ADVM3,
+  "macro/michigan_sentiment:sentiment": [{
+    label: "UMich CSV",
+    title: "University of Michigan official sentiment CSV",
+    url: "https://www.sca.isr.umich.edu/files/tbcics.csv",
+  }],
+  "macro/michigan_sentiment:current_conditions": [{
+    label: "UMich CSV",
+    title: "University of Michigan official current conditions / expectations CSV",
+    url: "https://www.sca.isr.umich.edu/files/tbciccice.csv",
+  }],
+  "macro/michigan_sentiment:expectations": [{
+    label: "UMich CSV",
+    title: "University of Michigan official current conditions / expectations CSV",
+    url: "https://www.sca.isr.umich.edu/files/tbciccice.csv",
+  }],
+  "macro/michigan_sentiment:inflation_1y": [{
+    label: "UMich CSV",
+    title: "University of Michigan official inflation expectations CSV",
+    url: "https://www.sca.isr.umich.edu/files/tbcpx1px5.csv",
+  }],
+  "macro/michigan_sentiment:inflation_5y": [{
+    label: "UMich CSV",
+    title: "University of Michigan official inflation expectations CSV",
+    url: "https://www.sca.isr.umich.edu/files/tbcpx1px5.csv",
+  }],
   "macro/fng:*": [{
     label: "CNN",
     title: "CNN Fear & Greed dataviz API",

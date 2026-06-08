@@ -3,7 +3,7 @@
 # requires-python = ">=3.11"
 # dependencies = ["pandas>=2.0", "numpy>=1.26"]
 # ///
-"""一次性构建/重建 成屋销售(NAR Existing Home Sales, SAAR)历史 → feeds/ehs_archive.csv
+"""一次性构建/重建 成屋销售(NAR Existing Home Sales, SAAR)历史 → data/cache/ehs_archive.csv
 
 【P14 调研结论(2026-06-07,全部实测,找"单一 vintage 全史")】
 免费源里不存在真·单一 vintage 全史,三条候选路线全部排除:
@@ -38,10 +38,10 @@
   2. DBnomics 的 NAR 抓取仓库 git.nomics.world(dbnomics-json-data/nar-json-data,
      ehs/ehs_mo_us_sa.tsv),62 个 commit(2018-10..2024-08)= 62 份 13 个月窗口
 
-幂等/韧性:先从现有 feeds/ehs_archive.csv 播种(老月份/未来 API 月份不丢),
+幂等/韧性:先从现有 data/cache/ehs_archive.csv 播种(老月份/未来 API 月份不丢),
 再叠加镜像与官方 API;wayback 间歇 503 时单源失败只 WARN 不中断。
 ONE-OFF 构建脚本,不进 run_all.py;日常续更由 home_sales_prices.py 用官方
-FRED API 窗口自动回写 feeds/ehs_archive.csv。
+FRED API 窗口自动回写 data/cache/ehs_archive.csv。
 """
 import csv
 import hashlib
@@ -51,9 +51,9 @@ import tempfile
 import time
 from datetime import date
 
-from _common import HERE, _get, fred
+from _common import CACHE_DIR as DATA_CACHE_DIR, _get, fred
 
-ARCHIVE = os.path.join(HERE, "ehs_archive.csv")
+ARCHIVE = os.path.join(DATA_CACHE_DIR, "ehs_archive.csv")
 CACHE = os.path.join(tempfile.gettempdir(), "ehs_archive_cache")  # wayback 限速,缓存助重跑
 
 WB = "https://web.archive.org/web/{ts}if_/{url}"

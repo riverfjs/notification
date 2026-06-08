@@ -19,6 +19,7 @@ MODULES = [
     "jobs_monthly", "claims_weekly", "personal_finance",
     "home_sales_prices", "vehicle_sales", "retail",
     "housing_supply", "mfg_orders_pmi", "wei",
+    "us_inflation_releases", "us_growth_releases", "us_trade_orders", "michigan_sentiment",
     "copper_gold_ppi", "oil_gold_cpi", "inflation_monetary",
     "rates", "credit_spread",                                  # 14 FRED(官方 API)
     "ism_pmi", "naaim", "cot_sp500", "cot_nasdaq100",

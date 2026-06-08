@@ -1,5 +1,6 @@
 # 每个交易日收盘后在 GitHub 上跑 feeds/run_all.py,把更新的 CSV 提交回仓库。
-# 依赖:仓库 Settings → Secrets and variables → Actions → 新建 secret `FRED_API_KEY`。
+# 依赖:仓库 Settings → Secrets and variables → Actions → 新建 secret `FRED_API_KEY`,
+#      `CENSUS_API_KEY`。
 # 手动触发:Actions 页 → feeds-daily → Run workflow(首次先手动跑一次,验证各源对云 IP 的态度)。
 name: feeds-daily
 
@@ -35,13 +36,14 @@ jobs:
         continue-on-error: true
         env:
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+          CENSUS_API_KEY: ${{ secrets.CENSUS_API_KEY }}
         run: uv run feeds/run_all.py
 
       - name: 提交并推送数据变更(成功的模块照常落地)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/ feeds/ehs_archive.csv
+          git add data/
           if git diff --staged --quiet; then
             echo "无数据变更,跳过提交"
           else
