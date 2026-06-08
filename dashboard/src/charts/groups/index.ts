@@ -7,4 +7,4 @@ import { sentiment } from "./sentiment";
 import { breadth } from "./breadth";
 
 /** 六组 21 张图(20 张主题图 + F&G) */
-export const GROUPS: GroupSpec[] = [consumption, supply, inflation, rates, sentiment, breadth];
+export const GROUPS: GroupSpec[] = [sentiment, rates, breadth, inflation, consumption, supply];

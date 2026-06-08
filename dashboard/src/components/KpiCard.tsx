@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { loadCsv, pairs } from "../lib/csv";
+import type { SeriesSpec } from "../charts/types";
+import { seriesData } from "../lib/seriesData";
 import { last } from "../lib/transform";
 
-export interface KpiSpec {
+export interface KpiSpec extends Pick<SeriesSpec, "csv" | "col" | "append" | "yoyMonths" | "scale"> {
   title: string;
-  csv: string;
-  col: string;
   fmt?: "pct" | "num";
   digits?: number;
-  /** 数值乘数(单位换算,如人 → 千人) */
-  scale?: number;
+  compact?: boolean;
   /** 高位是好(绿)还是坏(红);undefined = 中性灰 */
   goodWhen?: "high" | "low";
   /** 额外说明,如阈值 */
@@ -26,8 +24,8 @@ export function KpiCard({ spec, onClick }: { spec: KpiSpec; onClick?: () => void
 
   useEffect(() => {
     let dead = false;
-    loadCsv(spec.csv)
-      .then((t) => !dead && setV(last(pairs(t, spec.col))))
+    seriesData(spec)
+      .then((d) => !dead && setV(last(d)))
       .catch(() => !dead && setErr(true));
     return () => {
       dead = true;
@@ -35,14 +33,23 @@ export function KpiCard({ spec, onClick }: { spec: KpiSpec; onClick?: () => void
   }, [spec]);
 
   const d = spec.digits ?? 2;
-  const k = spec.scale ?? 1;
-  const delta = v && v.prev !== null ? (v.value - v.prev) * k : null;
+  const delta = v && v.prev !== null ? v.value - v.prev : null;
+  const fmtValue = (x: number) =>
+    spec.compact
+      ? x.toLocaleString("en-US", { notation: "compact", maximumFractionDigits: d })
+      : x.toFixed(d);
   const deltaCls =
-    delta === null || spec.goodWhen === undefined
+    delta === null
       ? "text-muted-foreground"
-      : (delta >= 0) === (spec.goodWhen === "high")
-        ? "text-up"
-        : "text-down";
+      : spec.goodWhen === undefined
+        ? delta >= 0 ? "text-up" : "text-down"
+        : (delta >= 0) === (spec.goodWhen === "high")
+          ? "text-up"
+          : "text-down";
+  const valueCls =
+    delta === null || Math.abs(delta) < 1e-12
+      ? "text-muted-foreground"
+      : deltaCls;
 
   return (
     <Card
@@ -56,14 +63,14 @@ export function KpiCard({ spec, onClick }: { spec: KpiSpec; onClick?: () => void
       <CardHeader className="px-4 gap-1">
         <CardDescription className="text-xs truncate">{spec.title}</CardDescription>
         <CardTitle className="num text-2xl whitespace-nowrap">
-          {err ? "—" : v ? (v.value * k).toFixed(d) : "…"}
+          {err ? "—" : v ? fmtValue(v.value) : "…"}
           {spec.fmt === "pct" && !err && v ? <span className="text-sm">%</span> : null}
         </CardTitle>
         {delta !== null && (
           <CardAction>
-            <Badge variant="outline" className={`num ${deltaCls}`}>
+            <Badge variant="outline" className={`num ${valueCls}`} title={`上一期变化: ${delta >= 0 ? "+" : ""}${delta.toFixed(d)}`}>
               {delta >= 0 ? "+" : ""}
-              {delta.toFixed(d)}
+              {fmtValue(delta)}
             </Badge>
           </CardAction>
         )}

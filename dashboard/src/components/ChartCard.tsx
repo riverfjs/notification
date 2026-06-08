@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Layers, Maximize2 } from "lucide-react";
+import { ExternalLink, Layers, Maximize2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import type { ChartSpec, SeriesSpec } from "../charts/types";
+import type { ChartSpec } from "../charts/types";
 import { baseOption, echarts, INK2, PALETTE, yAxis } from "../charts/theme";
-import { loadCsv, pairs } from "../lib/csv";
-import { stitch, yoy, scale as scalePairs, type Pair } from "../lib/transform";
+import { seriesData } from "../lib/seriesData";
+import { sourceLinksForSeries } from "../lib/sourceUrls";
 
 const RANGES: { label: string; years: number | null }[] = [
   { label: "1Y", years: 1 },
@@ -16,17 +16,6 @@ const RANGES: { label: string; years: number | null }[] = [
   { label: "10Y", years: 10 },
   { label: "全部", years: null },
 ];
-
-async function seriesData(s: SeriesSpec): Promise<Pair[]> {
-  let d = pairs(await loadCsv(s.csv), s.col);
-  if (s.append) {
-    const b = pairs(await loadCsv(s.append.csv), s.append.col);
-    d = stitch(d, b, s.append.cut);
-  }
-  if (s.yoyMonths) d = yoy(d, s.yoyMonths);
-  if (s.scale !== undefined) d = scalePairs(d, s.scale);
-  return d;
-}
 
 /** 对比视图的缩放联动:按【日期】对齐(echarts.connect 是按百分比,两图历史长度
  *  不同会错位)。同组任一图缩放 → 把它的 startValue/endValue 原样派发给其余图。 */
@@ -76,6 +65,7 @@ export function ChartCard({
   // number=最近 N 年 / null=全部 / "custom"=已被拖拽或同步缩放(无预设高亮)
   const [range, setRange] = useState<number | null | "custom">(spec.defaultYears ?? 10);
   const progZoom = useRef(false);   // 本图自己派发缩放时置位,避免误清高亮
+  const sources = useMemo(() => sourceLinksForSeries(spec.series), [spec.series]);
 
   // 数据 + 渲染
   useEffect(() => {
@@ -209,6 +199,23 @@ export function ChartCard({
               </ToggleGroupItem>
             ))}
           </ToggleGroup>
+          {sources.map((source) => (
+            <Tooltip key={source.url}>
+              <TooltipTrigger asChild>
+                <a
+                  href={source.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`查看数据源:${source.title}`}
+                  className={buttonVariants({ variant: "outline", size: "sm", className: "h-7 px-2 gap-1 text-[11px] num" })}
+                >
+                  <ExternalLink className="size-3" />
+                  {source.label}
+                </a>
+              </TooltipTrigger>
+              <TooltipContent>{source.title}</TooltipContent>
+            </Tooltip>
+          ))}
           {onCompare && (
             <Tooltip>
               <TooltipTrigger asChild>
