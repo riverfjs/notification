@@ -6,7 +6,9 @@ name: feeds-daily
 
 on:
   schedule:
-    - cron: "0 0 * * *"       # UTC 00:00 = GMT+8 08:00,固定墙钟时间,不跟随美东冬夏令时
+    # 错开整点:GitHub Actions 的 scheduled 触发在整点(尤其 :00)排队最重、延迟最久,
+    # 故用 00:17 UTC = GMT+8 08:17。注意 schedule 本身不保证准时(高负载会延迟甚至偶尔跳过)。
+    - cron: "17 0 * * *"      # UTC 00:17 = GMT+8 08:17,固定墙钟时间,不跟随美东冬夏令时
   workflow_dispatch:
   push:
     paths:                    # feeds 代码变更即自动跑一轮验证(Actions 的数据提交只
