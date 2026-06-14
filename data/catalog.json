@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-06-13T04:58:00Z",
+  "generated_at": "2026-06-14T05:16:02Z",
   "total": 64,
   "types": [
     "macro",
@@ -283,8 +283,8 @@
       ],
       "frequency": "daily",
       "history_from": "1982-09-27",
-      "updated_at": "2026-06-12",
-      "sample_count": 15965,
+      "updated_at": "2026-06-13",
+      "sample_count": 15966,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/inflation_monetary.csv"
     },
     {
