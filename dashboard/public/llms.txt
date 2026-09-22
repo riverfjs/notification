@@ -13,20 +13,20 @@ Each CSV's first column is `date` (ISO `YYYY-MM-DD`); the remaining columns are 
 ## Macro (32)
 
 - [AAII 散户情绪](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/aaii.csv): weekly, 1987-07-24→2026-09-17, 2041 rows; id `macro/aaii`; cols: bullish, neutral, bearish, bull_bear_spread
-- [市场宽度](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/breadth.csv): daily, 1999-03-05→2026-09-18, 6928 rows; id `macro/breadth`; cols: breadth20, breadth50, breadth200, regime_bull
+- [市场宽度](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/breadth.csv): daily, 1999-03-05→2026-09-21, 6929 rows; id `macro/breadth`; cols: breadth20, breadth50, breadth200, regime_bull
 - [官方宽度](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/breadth_official.csv): daily, 2006-12-29→2026-08-27, 4968 rows; id `macro/breadth_official`; cols: pct_above_ma20, pct_above_ma50, pct_above_ma200
-- [成分股宽度](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/breadth_stocks.csv): daily, 2000-01-31→2026-09-18, 6699 rows; id `macro/breadth_stocks`; cols: pct_above_ma20, n_ma20, pct_above_ma50, n_ma50, pct_above_ma200, n_ma200, n_members
+- [成分股宽度](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/breadth_stocks.csv): daily, 2000-01-31→2026-09-21, 6700 rows; id `macro/breadth_stocks`; cols: pct_above_ma20, n_ma20, pct_above_ma50, n_ma50, pct_above_ma200, n_ma200, n_members
 - [每周初请失业金](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/claims_weekly.csv): weekly, 1967-01-07→2026-09-12, 3115 rows; id `macro/claims_weekly`; cols: initial_claims_weekly
-- [铜金比 vs PPI](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/copper_gold_ppi.csv): daily, 1913-01-01→2026-09-18, 7729 rows; id `macro/copper_gold_ppi`; cols: copper_usd_mt, ppi_all_commod, gold_usd_oz, copper_gold_ratio, copper_fut_usd_mt, copper_gold_ratio_daily
+- [铜金比 vs PPI](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/copper_gold_ppi.csv): daily, 1913-01-01→2026-09-21, 7730 rows; id `macro/copper_gold_ppi`; cols: copper_usd_mt, ppi_all_commod, gold_usd_oz, copper_gold_ratio, copper_fut_usd_mt, copper_gold_ratio_daily
 - [COT legacy 口径](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/cot_legacy.csv): weekly, 1986-01-15→2026-09-15, 1935 rows; id `macro/cot_legacy`; cols: sp500_big_oi, sp500_big_noncomm_net, sp500_big_comm_net, sp500_big_cot_index_mm, sp500_emini_oi, sp500_emini_noncomm_net, sp500_emini_comm_net, sp500_emini_cot_index_mm, ndx_big_oi, ndx_big_noncomm_net, ndx_big_comm_net, ndx_big_cot_index_mm, ndx_mini_oi, ndx_mini_noncomm_net, ndx_mini_comm_net, ndx_mini_cot_index_mm
 - [COT 纳指100](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/cot_nasdaq100.csv): weekly, 2006-06-13→2026-09-15, 1058 rows; id `macro/cot_nasdaq100`; cols: open_interest, lev_money_net, lev_money_cot_index, asset_mgr_net, asset_mgr_cot_index, dealer_net, dealer_cot_index
 - [COT 标普500](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/cot_sp500.csv): weekly, 2006-06-13→2026-09-15, 1058 rows; id `macro/cot_sp500`; cols: open_interest, lev_money_net, lev_money_cot_index, asset_mgr_net, asset_mgr_cot_index, dealer_net, dealer_cot_index
-- [信用利差](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/credit_spread.csv): daily, 1983-01-03→2026-09-18, 11286 rows; id `macro/credit_spread`; cols: baa_10y_spread, aaa_10y_spread, vix, baa_aaa_quality, hy_oas_full, hyg_tlt_ratio, hy_stress
-- [CNN 恐惧贪婪指数](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/fng.csv): daily, 2020-09-21→2026-09-18, 1507 rows; id `macro/fng`; cols: fng, momentum_spx, momentum_spx_ma125, strength_52w, breadth_mcclellan, putcall_5d, vix, vix_ma50, junk_spread, safehaven_diff, fng_rating
+- [信用利差](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/credit_spread.csv): daily, 1983-01-03→2026-09-21, 11287 rows; id `macro/credit_spread`; cols: baa_10y_spread, aaa_10y_spread, vix, baa_aaa_quality, hy_oas_full, hyg_tlt_ratio, hy_stress
+- [CNN 恐惧贪婪指数](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/fng.csv): daily, 2020-09-21→2026-09-22, 1509 rows; id `macro/fng`; cols: fng, momentum_spx, momentum_spx_ma125, strength_52w, breadth_mcclellan, putcall_5d, vix, vix_ma50, junk_spread, safehaven_diff, fng_rating
 - [房屋销售与价格](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/home_sales_prices.csv): monthly, 1963-01-01→2026-07-01, 763 rows; id `macro/home_sales_prices`; cols: new_home_sales_k, case_shiller_natl, existing_home_sales_k
 - [住房供给](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/housing_supply.csv): monthly, 1959-01-01→2026-08-01, 812 rows; id `macro/housing_supply`; cols: building_permits_k, housing_starts_k, months_supply_new
 - [hy_oas_mirror](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/hy_oas_mirror.csv): daily, 1996-12-31→2025-11-03, 7530 rows; id `macro/hy_oas_mirror`; cols: hy_oas
-- [货币与通胀](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/inflation_monetary.csv): daily, 1982-09-27→2026-09-20, 16065 rows; id `macro/inflation_monetary`; cols: breakeven_5y, breakeven_10y, fwd_5y5y_infl, fed_funds_target
+- [货币与通胀](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/inflation_monetary.csv): daily, 1982-09-27→2026-09-21, 16066 rows; id `macro/inflation_monetary`; cols: breakeven_5y, breakeven_10y, fwd_5y5y_infl, fed_funds_target
 - [ISM PMI](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/ism_pmi.csv): monthly, 1948-01-01→2026-08-01, 944 rows; id `macro/ism_pmi`; cols: ism_pmi
 - [月度就业](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/jobs_monthly.csv): monthly, 1948-01-01→2026-08-01, 943 rows; id `macro/jobs_monthly`; cols: nonfarm_payrolls_k, unemployment_rate_pct
 - [制造业订单与PMI](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/mfg_orders_pmi.csv): monthly, 1968-05-01→2026-09-01, 701 rows; id `macro/mfg_orders_pmi`; cols: durable_goods_orders, mfg_new_orders_total, philly_fed_mfg, ny_fed_mfg
@@ -35,10 +35,10 @@ Each CSV's first column is `date` (ISO `YYYY-MM-DD`); the remaining columns are 
 - [油金比 vs CPI](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/oil_gold_cpi.csv): daily, 1947-01-01→2026-09-15, 11228 rows; id `macro/oil_gold_cpi`; cols: wti_usd_bbl, cpi_all_urban, gold_usd_oz, oil_gold_ratio
 - [个人收支](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/personal_finance.csv): monthly, 1959-01-01→2026-07-01, 811 rows; id `macro/personal_finance`; cols: personal_income, real_disposable_income, personal_saving_rate_pct
 - [期权 PC 比(历史)](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/putcall.csv): daily, 2003-10-17→2019-10-04, 4019 rows; id `macro/putcall`; cols: equity_pc, index_pc, total_pc, equity_pc_archive, index_pc_archive
-- [期权 PC 比(CBOE)](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/putcall_cboe.csv): daily, 2019-10-07→2026-09-21, 1816 rows; id `macro/putcall_cboe`; cols: total_pc, index_pc, etp_pc, equity_pc, call_volume, put_volume
-- [市场利率与政策利率](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/rates.csv): daily, 1954-07-01→2026-09-18, 26378 rows; id `macro/rates`; cols: ust_3m, ust_2y, ust_10y, fed_funds_eff, curve_10y_2y, curve_10y_3m
+- [期权 PC 比(CBOE)](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/putcall_cboe.csv): daily, 2019-10-07→2026-09-22, 1817 rows; id `macro/putcall_cboe`; cols: total_pc, index_pc, etp_pc, equity_pc, call_volume, put_volume
+- [市场利率与政策利率](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/rates.csv): daily, 1954-07-01→2026-09-21, 26379 rows; id `macro/rates`; cols: ust_3m, ust_2y, ust_10y, fed_funds_eff, curve_10y_2y, curve_10y_3m
 - [零售销售](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/retail.csv): monthly, 1992-01-01→2026-08-01, 416 rows; id `macro/retail`; cols: retail_food_services, retail_ex_autos
-- [行业相对强度](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/sector_strength.csv): daily, 1998-12-22→2026-09-18, 6977 rows; id `macro/sector_strength`; cols: XLB_rs63, XLC_rs63, XLE_rs63, XLF_rs63, XLI_rs63, XLK_rs63, XLP_rs63, XLRE_rs63, XLU_rs63, XLV_rs63, XLY_rs63, XLB_rs_line, XLC_rs_line, XLE_rs_line, XLF_rs_line, XLI_rs_line, XLK_rs_line, XLP_rs_line, XLRE_rs_line, XLU_rs_line, XLV_rs_line, XLY_rs_line
+- [行业相对强度](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/sector_strength.csv): daily, 1998-12-22→2026-09-21, 6978 rows; id `macro/sector_strength`; cols: XLB_rs63, XLC_rs63, XLE_rs63, XLF_rs63, XLI_rs63, XLK_rs63, XLP_rs63, XLRE_rs63, XLU_rs63, XLV_rs63, XLY_rs63, XLB_rs_line, XLC_rs_line, XLE_rs_line, XLF_rs_line, XLI_rs_line, XLK_rs_line, XLP_rs_line, XLRE_rs_line, XLU_rs_line, XLV_rs_line, XLY_rs_line
 - [增长数据发布](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/us_growth_releases.csv): quarterly, 1947-04-01→2026-04-01, 317 rows; id `macro/us_growth_releases`; cols: real_gdp_qoq_saar
 - [通胀数据发布](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/us_inflation_releases.csv): monthly, 1959-01-01→2026-08-01, 812 rows; id `macro/us_inflation_releases`; cols: cpi_headline, cpi_headline_mom, cpi_headline_yoy, cpi_core, cpi_core_mom, cpi_core_yoy, ppi_headline, ppi_headline_mom, ppi_headline_yoy, ppi_core, ppi_core_mom, ppi_core_yoy, ppi_core_ex_food_energy_trade, ppi_core_ex_food_energy_trade_mom, ppi_core_ex_food_energy_trade_yoy, pce, pce_mom, pce_yoy, core_pce, core_pce_mom, core_pce_yoy
 - [贸易与订单](https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/us_trade_orders.csv): monthly, 2016-01-01→2026-07-01, 127 rows; id `macro/us_trade_orders`; cols: trade_balance_goods_services, durable_ex_transport_orders, durable_ex_transport_orders_mom
@@ -47,42 +47,42 @@ Each CSV's first column is `date` (ISO `YYYY-MM-DD`); the remaining columns are 
 
 ## Tickers (30)
 
-- [DBC](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/DBC.csv): daily, 2006-02-06→2026-09-18, 5187 rows; id `tickers/DBC`; cols: o, h, l, c, v
-- [DIA](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/DIA.csv): daily, 1998-01-20→2026-09-18, 7211 rows; id `tickers/DIA`; cols: o, h, l, c, v
-- [EEM](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/EEM.csv): daily, 2003-04-14→2026-09-18, 5896 rows; id `tickers/EEM`; cols: o, h, l, c, v
-- [EFA](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/EFA.csv): daily, 2001-08-27→2026-09-18, 6302 rows; id `tickers/EFA`; cols: o, h, l, c, v
-- [GLD](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/GLD.csv): daily, 2004-11-18→2026-09-18, 5492 rows; id `tickers/GLD`; cols: o, h, l, c, v
-- [HYG](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/HYG.csv): daily, 2007-04-11→2026-09-18, 4892 rows; id `tickers/HYG`; cols: o, h, l, c, v
-- [IWM](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/IWM.csv): daily, 2000-05-26→2026-09-18, 6617 rows; id `tickers/IWM`; cols: o, h, l, c, v
-- [IWY](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/IWY.csv): daily, 2009-09-28→2026-09-18, 4270 rows; id `tickers/IWY`; cols: o, h, l, c, v
-- [MOAT](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/MOAT.csv): daily, 2012-04-25→2026-09-18, 3621 rows; id `tickers/MOAT`; cols: o, h, l, c, v
-- [PFF](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/PFF.csv): daily, 2007-03-30→2026-09-18, 4899 rows; id `tickers/PFF`; cols: o, h, l, c, v
-- [QQQ](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/QQQ.csv): daily, 1999-03-10→2026-09-18, 6925 rows; id `tickers/QQQ`; cols: o, h, l, c, v
-- [RSP](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/RSP.csv): daily, 2003-05-01→2026-09-18, 5884 rows; id `tickers/RSP`; cols: o, h, l, c, v
-- [SPMO](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/SPMO.csv): daily, 2015-10-12→2026-09-18, 2750 rows; id `tickers/SPMO`; cols: o, h, l, c, v
-- [SPY](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/SPY.csv): daily, 1993-01-29→2026-09-18, 8467 rows; id `tickers/SPY`; cols: o, h, l, c, v
-- [TLT](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/TLT.csv): daily, 2002-07-30→2026-09-18, 6074 rows; id `tickers/TLT`; cols: o, h, l, c, v
-- [VIX](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/VIX.csv): daily, 1990-01-02→2026-09-18, 9248 rows; id `tickers/VIX`; cols: o, h, l, c, v
-- [VNQ](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/VNQ.csv): daily, 2004-09-29→2026-09-18, 5528 rows; id `tickers/VNQ`; cols: o, h, l, c, v
-- [VUSTX](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/VUSTX.csv): daily, 1986-05-19→2026-09-18, 10162 rows; id `tickers/VUSTX`; cols: o, h, l, c, v
+- [DBC](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/DBC.csv): daily, 2006-02-06→2026-09-21, 5188 rows; id `tickers/DBC`; cols: o, h, l, c, v
+- [DIA](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/DIA.csv): daily, 1998-01-20→2026-09-21, 7212 rows; id `tickers/DIA`; cols: o, h, l, c, v
+- [EEM](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/EEM.csv): daily, 2003-04-14→2026-09-21, 5897 rows; id `tickers/EEM`; cols: o, h, l, c, v
+- [EFA](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/EFA.csv): daily, 2001-08-27→2026-09-21, 6303 rows; id `tickers/EFA`; cols: o, h, l, c, v
+- [GLD](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/GLD.csv): daily, 2004-11-18→2026-09-21, 5493 rows; id `tickers/GLD`; cols: o, h, l, c, v
+- [HYG](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/HYG.csv): daily, 2007-04-11→2026-09-21, 4893 rows; id `tickers/HYG`; cols: o, h, l, c, v
+- [IWM](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/IWM.csv): daily, 2000-05-26→2026-09-21, 6618 rows; id `tickers/IWM`; cols: o, h, l, c, v
+- [IWY](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/IWY.csv): daily, 2009-09-28→2026-09-21, 4271 rows; id `tickers/IWY`; cols: o, h, l, c, v
+- [MOAT](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/MOAT.csv): daily, 2012-04-25→2026-09-21, 3622 rows; id `tickers/MOAT`; cols: o, h, l, c, v
+- [PFF](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/PFF.csv): daily, 2007-03-30→2026-09-21, 4900 rows; id `tickers/PFF`; cols: o, h, l, c, v
+- [QQQ](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/QQQ.csv): daily, 1999-03-10→2026-09-21, 6926 rows; id `tickers/QQQ`; cols: o, h, l, c, v
+- [RSP](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/RSP.csv): daily, 2003-05-01→2026-09-21, 5885 rows; id `tickers/RSP`; cols: o, h, l, c, v
+- [SPMO](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/SPMO.csv): daily, 2015-10-12→2026-09-21, 2751 rows; id `tickers/SPMO`; cols: o, h, l, c, v
+- [SPY](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/SPY.csv): daily, 1993-01-29→2026-09-21, 8468 rows; id `tickers/SPY`; cols: o, h, l, c, v
+- [TLT](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/TLT.csv): daily, 2002-07-30→2026-09-21, 6075 rows; id `tickers/TLT`; cols: o, h, l, c, v
+- [VIX](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/VIX.csv): daily, 1990-01-02→2026-09-21, 9249 rows; id `tickers/VIX`; cols: o, h, l, c, v
+- [VNQ](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/VNQ.csv): daily, 2004-09-29→2026-09-21, 5529 rows; id `tickers/VNQ`; cols: o, h, l, c, v
+- [VUSTX](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/VUSTX.csv): daily, 1986-05-19→2026-09-21, 10163 rows; id `tickers/VUSTX`; cols: o, h, l, c, v
 - [VXO](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/VXO.csv): daily, 1986-01-02→2021-09-23, 8998 rows; id `tickers/VXO`; cols: o, h, l, c, v
-- [XLB](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLB.csv): daily, 1998-12-22→2026-09-18, 6977 rows; id `tickers/XLB`; cols: o, h, l, c, v
-- [XLC](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLC.csv): daily, 2018-06-19→2026-09-18, 2074 rows; id `tickers/XLC`; cols: o, h, l, c, v
-- [XLE](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLE.csv): daily, 1998-12-22→2026-09-18, 6977 rows; id `tickers/XLE`; cols: o, h, l, c, v
-- [XLF](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLF.csv): daily, 1998-12-22→2026-09-18, 6977 rows; id `tickers/XLF`; cols: o, h, l, c, v
-- [XLI](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLI.csv): daily, 1998-12-22→2026-09-18, 6977 rows; id `tickers/XLI`; cols: o, h, l, c, v
-- [XLK](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLK.csv): daily, 1998-12-22→2026-09-18, 6977 rows; id `tickers/XLK`; cols: o, h, l, c, v
-- [XLP](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLP.csv): daily, 1998-12-22→2026-09-18, 6977 rows; id `tickers/XLP`; cols: o, h, l, c, v
-- [XLRE](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLRE.csv): daily, 2015-10-08→2026-09-18, 2752 rows; id `tickers/XLRE`; cols: o, h, l, c, v
-- [XLU](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLU.csv): daily, 1998-12-22→2026-09-18, 6977 rows; id `tickers/XLU`; cols: o, h, l, c, v
-- [XLV](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLV.csv): daily, 1998-12-22→2026-09-18, 6977 rows; id `tickers/XLV`; cols: o, h, l, c, v
-- [XLY](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLY.csv): daily, 1998-12-22→2026-09-18, 6977 rows; id `tickers/XLY`; cols: o, h, l, c, v
+- [XLB](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLB.csv): daily, 1998-12-22→2026-09-21, 6978 rows; id `tickers/XLB`; cols: o, h, l, c, v
+- [XLC](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLC.csv): daily, 2018-06-19→2026-09-21, 2075 rows; id `tickers/XLC`; cols: o, h, l, c, v
+- [XLE](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLE.csv): daily, 1998-12-22→2026-09-21, 6978 rows; id `tickers/XLE`; cols: o, h, l, c, v
+- [XLF](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLF.csv): daily, 1998-12-22→2026-09-21, 6978 rows; id `tickers/XLF`; cols: o, h, l, c, v
+- [XLI](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLI.csv): daily, 1998-12-22→2026-09-21, 6978 rows; id `tickers/XLI`; cols: o, h, l, c, v
+- [XLK](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLK.csv): daily, 1998-12-22→2026-09-21, 6978 rows; id `tickers/XLK`; cols: o, h, l, c, v
+- [XLP](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLP.csv): daily, 1998-12-22→2026-09-21, 6978 rows; id `tickers/XLP`; cols: o, h, l, c, v
+- [XLRE](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLRE.csv): daily, 2015-10-08→2026-09-21, 2753 rows; id `tickers/XLRE`; cols: o, h, l, c, v
+- [XLU](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLU.csv): daily, 1998-12-22→2026-09-21, 6978 rows; id `tickers/XLU`; cols: o, h, l, c, v
+- [XLV](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLV.csv): daily, 1998-12-22→2026-09-21, 6978 rows; id `tickers/XLV`; cols: o, h, l, c, v
+- [XLY](https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLY.csv): daily, 1998-12-22→2026-09-21, 6978 rows; id `tickers/XLY`; cols: o, h, l, c, v
 
 ## Spot (2)
 
-- [COPPER](https://raw.githubusercontent.com/riverfjs/notification/main/data/spot/COPPER.csv): daily, 2000-08-30→2026-09-18, 6564 rows; id `spot/COPPER`; cols: c
-- [XAUUSD](https://raw.githubusercontent.com/riverfjs/notification/main/data/spot/XAUUSD.csv): daily, 1968-01-02→2026-09-18, 14839 rows; id `spot/XAUUSD`; cols: c
+- [COPPER](https://raw.githubusercontent.com/riverfjs/notification/main/data/spot/COPPER.csv): daily, 2000-08-30→2026-09-21, 6565 rows; id `spot/COPPER`; cols: c
+- [XAUUSD](https://raw.githubusercontent.com/riverfjs/notification/main/data/spot/XAUUSD.csv): daily, 1968-01-02→2026-09-21, 14840 rows; id `spot/XAUUSD`; cols: c
 
 ---
 Machine-readable catalog: https://raw.githubusercontent.com/riverfjs/notification/main/data/catalog.json
-Generated 2026-09-21T05:07:09Z from 64 datasets.
+Generated 2026-09-22T05:06:50Z from 64 datasets.
