@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-23T05:01:33Z",
+  "generated_at": "2026-10-24T04:46:02Z",
   "total": 64,
   "types": [
     "macro",
@@ -38,8 +38,8 @@
       ],
       "frequency": "daily",
       "history_from": "1999-03-05",
-      "updated_at": "2026-10-22",
-      "sample_count": 6952,
+      "updated_at": "2026-10-23",
+      "sample_count": 6953,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/breadth.csv"
     },
     {
@@ -74,8 +74,8 @@
       ],
       "frequency": "daily",
       "history_from": "2000-01-31",
-      "updated_at": "2026-10-22",
-      "sample_count": 6723,
+      "updated_at": "2026-10-23",
+      "sample_count": 6724,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/breadth_stocks.csv"
     },
     {
@@ -107,8 +107,8 @@
       ],
       "frequency": "daily",
       "history_from": "1913-01-01",
-      "updated_at": "2026-10-22",
-      "sample_count": 7753,
+      "updated_at": "2026-10-23",
+      "sample_count": 7754,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/copper_gold_ppi.csv"
     },
     {
@@ -136,8 +136,8 @@
       ],
       "frequency": "weekly",
       "history_from": "1986-01-15",
-      "updated_at": "2026-10-13",
-      "sample_count": 1939,
+      "updated_at": "2026-10-20",
+      "sample_count": 1940,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/cot_legacy.csv"
     },
     {
@@ -156,8 +156,8 @@
       ],
       "frequency": "weekly",
       "history_from": "2006-06-13",
-      "updated_at": "2026-10-13",
-      "sample_count": 1062,
+      "updated_at": "2026-10-20",
+      "sample_count": 1063,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/cot_nasdaq100.csv"
     },
     {
@@ -176,8 +176,8 @@
       ],
       "frequency": "weekly",
       "history_from": "2006-06-13",
-      "updated_at": "2026-10-13",
-      "sample_count": 1062,
+      "updated_at": "2026-10-20",
+      "sample_count": 1063,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/cot_sp500.csv"
     },
     {
@@ -196,8 +196,8 @@
       ],
       "frequency": "daily",
       "history_from": "1983-01-03",
-      "updated_at": "2026-10-22",
-      "sample_count": 11310,
+      "updated_at": "2026-10-23",
+      "sample_count": 11311,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/credit_spread.csv"
     },
     {
@@ -283,8 +283,8 @@
       ],
       "frequency": "daily",
       "history_from": "1982-09-27",
-      "updated_at": "2026-10-22",
-      "sample_count": 16097,
+      "updated_at": "2026-10-23",
+      "sample_count": 16098,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/inflation_monetary.csv"
     },
     {
@@ -347,8 +347,8 @@
       ],
       "frequency": "monthly",
       "history_from": "2025-10-01",
-      "updated_at": "2026-09-01",
-      "sample_count": 12,
+      "updated_at": "2026-10-01",
+      "sample_count": 13,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/michigan_sentiment.csv"
     },
     {
@@ -452,8 +452,8 @@
       ],
       "frequency": "daily",
       "history_from": "1954-07-01",
-      "updated_at": "2026-10-22",
-      "sample_count": 26412,
+      "updated_at": "2026-10-23",
+      "sample_count": 26413,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/rates.csv"
     },
     {
@@ -502,8 +502,8 @@
       ],
       "frequency": "daily",
       "history_from": "1998-12-22",
-      "updated_at": "2026-10-22",
-      "sample_count": 7001,
+      "updated_at": "2026-10-23",
+      "sample_count": 7002,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/macro/sector_strength.csv"
     },
     {
@@ -611,8 +611,8 @@
       ],
       "frequency": "daily",
       "history_from": "2000-08-30",
-      "updated_at": "2026-10-22",
-      "sample_count": 6588,
+      "updated_at": "2026-10-23",
+      "sample_count": 6589,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/spot/COPPER.csv"
     },
     {
@@ -643,8 +643,8 @@
       ],
       "frequency": "daily",
       "history_from": "2006-02-06",
-      "updated_at": "2026-10-22",
-      "sample_count": 5211,
+      "updated_at": "2026-10-23",
+      "sample_count": 5212,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/DBC.csv"
     },
     {
@@ -661,8 +661,8 @@
       ],
       "frequency": "daily",
       "history_from": "1998-01-20",
-      "updated_at": "2026-10-22",
-      "sample_count": 7235,
+      "updated_at": "2026-10-23",
+      "sample_count": 7236,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/DIA.csv"
     },
     {
@@ -679,8 +679,8 @@
       ],
       "frequency": "daily",
       "history_from": "2003-04-14",
-      "updated_at": "2026-10-22",
-      "sample_count": 5920,
+      "updated_at": "2026-10-23",
+      "sample_count": 5921,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/EEM.csv"
     },
     {
@@ -697,8 +697,8 @@
       ],
       "frequency": "daily",
       "history_from": "2001-08-27",
-      "updated_at": "2026-10-22",
-      "sample_count": 6326,
+      "updated_at": "2026-10-23",
+      "sample_count": 6327,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/EFA.csv"
     },
     {
@@ -715,8 +715,8 @@
       ],
       "frequency": "daily",
       "history_from": "2004-11-18",
-      "updated_at": "2026-10-22",
-      "sample_count": 5516,
+      "updated_at": "2026-10-23",
+      "sample_count": 5517,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/GLD.csv"
     },
     {
@@ -733,8 +733,8 @@
       ],
       "frequency": "daily",
       "history_from": "2007-04-11",
-      "updated_at": "2026-10-22",
-      "sample_count": 4916,
+      "updated_at": "2026-10-23",
+      "sample_count": 4917,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/HYG.csv"
     },
     {
@@ -751,8 +751,8 @@
       ],
       "frequency": "daily",
       "history_from": "2000-05-26",
-      "updated_at": "2026-10-22",
-      "sample_count": 6641,
+      "updated_at": "2026-10-23",
+      "sample_count": 6642,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/IWM.csv"
     },
     {
@@ -769,8 +769,8 @@
       ],
       "frequency": "daily",
       "history_from": "2009-09-28",
-      "updated_at": "2026-10-22",
-      "sample_count": 4294,
+      "updated_at": "2026-10-23",
+      "sample_count": 4295,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/IWY.csv"
     },
     {
@@ -787,8 +787,8 @@
       ],
       "frequency": "daily",
       "history_from": "2012-04-25",
-      "updated_at": "2026-10-22",
-      "sample_count": 3645,
+      "updated_at": "2026-10-23",
+      "sample_count": 3646,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/MOAT.csv"
     },
     {
@@ -805,8 +805,8 @@
       ],
       "frequency": "daily",
       "history_from": "2007-03-30",
-      "updated_at": "2026-10-22",
-      "sample_count": 4923,
+      "updated_at": "2026-10-23",
+      "sample_count": 4924,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/PFF.csv"
     },
     {
@@ -823,8 +823,8 @@
       ],
       "frequency": "daily",
       "history_from": "1999-03-10",
-      "updated_at": "2026-10-22",
-      "sample_count": 6949,
+      "updated_at": "2026-10-23",
+      "sample_count": 6950,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/QQQ.csv"
     },
     {
@@ -841,8 +841,8 @@
       ],
       "frequency": "daily",
       "history_from": "2003-05-01",
-      "updated_at": "2026-10-22",
-      "sample_count": 5908,
+      "updated_at": "2026-10-23",
+      "sample_count": 5909,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/RSP.csv"
     },
     {
@@ -859,8 +859,8 @@
       ],
       "frequency": "daily",
       "history_from": "2015-10-12",
-      "updated_at": "2026-10-22",
-      "sample_count": 2774,
+      "updated_at": "2026-10-23",
+      "sample_count": 2775,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/SPMO.csv"
     },
     {
@@ -877,8 +877,8 @@
       ],
       "frequency": "daily",
       "history_from": "1993-01-29",
-      "updated_at": "2026-10-22",
-      "sample_count": 8491,
+      "updated_at": "2026-10-23",
+      "sample_count": 8492,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/SPY.csv"
     },
     {
@@ -895,8 +895,8 @@
       ],
       "frequency": "daily",
       "history_from": "2002-07-30",
-      "updated_at": "2026-10-22",
-      "sample_count": 6098,
+      "updated_at": "2026-10-23",
+      "sample_count": 6099,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/TLT.csv"
     },
     {
@@ -913,8 +913,8 @@
       ],
       "frequency": "daily",
       "history_from": "1990-01-02",
-      "updated_at": "2026-10-22",
-      "sample_count": 9272,
+      "updated_at": "2026-10-23",
+      "sample_count": 9273,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/VIX.csv"
     },
     {
@@ -931,8 +931,8 @@
       ],
       "frequency": "daily",
       "history_from": "2004-09-29",
-      "updated_at": "2026-10-22",
-      "sample_count": 5552,
+      "updated_at": "2026-10-23",
+      "sample_count": 5553,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/VNQ.csv"
     },
     {
@@ -949,8 +949,8 @@
       ],
       "frequency": "daily",
       "history_from": "1986-05-19",
-      "updated_at": "2026-10-22",
-      "sample_count": 10186,
+      "updated_at": "2026-10-23",
+      "sample_count": 10187,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/VUSTX.csv"
     },
     {
@@ -985,8 +985,8 @@
       ],
       "frequency": "daily",
       "history_from": "1998-12-22",
-      "updated_at": "2026-10-22",
-      "sample_count": 7001,
+      "updated_at": "2026-10-23",
+      "sample_count": 7002,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLB.csv"
     },
     {
@@ -1003,8 +1003,8 @@
       ],
       "frequency": "daily",
       "history_from": "2018-06-19",
-      "updated_at": "2026-10-22",
-      "sample_count": 2098,
+      "updated_at": "2026-10-23",
+      "sample_count": 2099,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLC.csv"
     },
     {
@@ -1021,8 +1021,8 @@
       ],
       "frequency": "daily",
       "history_from": "1998-12-22",
-      "updated_at": "2026-10-22",
-      "sample_count": 7001,
+      "updated_at": "2026-10-23",
+      "sample_count": 7002,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLE.csv"
     },
     {
@@ -1039,8 +1039,8 @@
       ],
       "frequency": "daily",
       "history_from": "1998-12-22",
-      "updated_at": "2026-10-22",
-      "sample_count": 7001,
+      "updated_at": "2026-10-23",
+      "sample_count": 7002,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLF.csv"
     },
     {
@@ -1057,8 +1057,8 @@
       ],
       "frequency": "daily",
       "history_from": "1998-12-22",
-      "updated_at": "2026-10-22",
-      "sample_count": 7001,
+      "updated_at": "2026-10-23",
+      "sample_count": 7002,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLI.csv"
     },
     {
@@ -1075,8 +1075,8 @@
       ],
       "frequency": "daily",
       "history_from": "1998-12-22",
-      "updated_at": "2026-10-22",
-      "sample_count": 7001,
+      "updated_at": "2026-10-23",
+      "sample_count": 7002,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLK.csv"
     },
     {
@@ -1093,8 +1093,8 @@
       ],
       "frequency": "daily",
       "history_from": "1998-12-22",
-      "updated_at": "2026-10-22",
-      "sample_count": 7001,
+      "updated_at": "2026-10-23",
+      "sample_count": 7002,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLP.csv"
     },
     {
@@ -1111,8 +1111,8 @@
       ],
       "frequency": "daily",
       "history_from": "2015-10-08",
-      "updated_at": "2026-10-22",
-      "sample_count": 2776,
+      "updated_at": "2026-10-23",
+      "sample_count": 2777,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLRE.csv"
     },
     {
@@ -1129,8 +1129,8 @@
       ],
       "frequency": "daily",
       "history_from": "1998-12-22",
-      "updated_at": "2026-10-22",
-      "sample_count": 7001,
+      "updated_at": "2026-10-23",
+      "sample_count": 7002,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLU.csv"
     },
     {
@@ -1147,8 +1147,8 @@
       ],
       "frequency": "daily",
       "history_from": "1998-12-22",
-      "updated_at": "2026-10-22",
-      "sample_count": 7001,
+      "updated_at": "2026-10-23",
+      "sample_count": 7002,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLV.csv"
     },
     {
@@ -1165,8 +1165,8 @@
       ],
       "frequency": "daily",
       "history_from": "1998-12-22",
-      "updated_at": "2026-10-22",
-      "sample_count": 7001,
+      "updated_at": "2026-10-23",
+      "sample_count": 7002,
       "data_url": "https://raw.githubusercontent.com/riverfjs/notification/main/data/tickers/XLY.csv"
     }
   ]
