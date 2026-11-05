@@ -272,7 +272,6 @@ KMB,Kimberly-Clark,Consumer Staples,Household Products,"Irving, Texas",1957-03-0
 KMI,Kinder Morgan,Energy,Oil & Gas Storage & Transportation,"Houston, Texas",2012-05-25,1506307,1997,KMI
 KO,Coca-Cola Company (The),Consumer Staples,Soft Drinks & Non-alcoholic Beverages,"Atlanta, Georgia",1957-03-04,21344,1886,KO
 KR,Kroger,Consumer Staples,Food Retail,"Cincinnati, Ohio",1957-03-04,56873,1883,KR
-KVUE,Kenvue,Consumer Staples,Personal Care Products,"Skillman, New Jersey",2023-08-25,1944048,2022 (Johnson & Johnson spinoff),KVUE
 L,Loews Corporation,Financials,Multi-line Insurance,"New York City, New York",1995-05-31,60086,1959,L
 LDOS,Leidos,Industrials,Diversified Support Services,"Reston, Virginia",2019-08-09,1336920,1969,LDOS
 LEN,Lennar,Consumer Discretionary,Homebuilding,"Miami, Florida",2005-10-04,920760,1954,LEN
@@ -346,6 +345,7 @@ NXPI,NXP Semiconductors,Information Technology,Semiconductors,"Eindhoven, Nether
 O,Realty Income,Real Estate,Retail REITs,"San Diego, California",2015-04-07,726728,1969,O
 ODFL,Old Dominion,Industrials,Cargo Ground Transportation,"Thomasville, North Carolina",2019-12-09,878927,1934,ODFL
 OKE,Oneok,Energy,Oil & Gas Storage & Transportation,"Tulsa, Oklahoma",2010-03-15,1039684,1906,OKE
+OKTA,"Okta, Inc.",Information Technology,Application Software,"San Francisco, California",2026-11-04,1660134,2009,OKTA
 OMC,Omnicom Group,Communication Services,Advertising,"New York City, New York",1997-12-31,29989,1986,OMC
 ON,ON Semiconductor,Information Technology,Semiconductors,"Phoenix, Arizona",2022-06-21,1097864,1999,ON
 ORCL,Oracle Corporation,Information Technology,Application Software,"Austin, Texas",1989-08-31,1341439,1977,ORCL
